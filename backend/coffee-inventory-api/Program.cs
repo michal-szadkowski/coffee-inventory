@@ -1,3 +1,5 @@
+using API;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -7,6 +9,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Logging.AddConsole();
+
+builder.Services.RegisterDataAccessServices(
+    builder.Configuration.GetSection("Settings").Get<Settings>()
+);
+
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
 
