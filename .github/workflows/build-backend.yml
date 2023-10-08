@@ -23,6 +23,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore backend
     - name: Build
-      run: dotnet build backend--no-restore
+      run: dotnet build backend --no-restore
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
