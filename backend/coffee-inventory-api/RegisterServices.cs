@@ -19,5 +19,6 @@ public static class RegisterServices
             x => new MongoAccess(settings.MongoDBConnection, settings.MongoDBDatabase)
         );
         collection.AddSingleton<IRepository<Coffee>, CoffeeRepository>();
+        collection.AddSingleton<IRepository<CoffeePack>, CoffeePackRepository>();
     }
 }

@@ -1,5 +1,4 @@
 using DataAccess.Entities;
-using MongoDB.Driver;
 
 namespace DataAccess.Repositories;
 
