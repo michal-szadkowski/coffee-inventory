@@ -1,4 +1,5 @@
 using System.Net;
+using DataAccess;
 using DataAccess.Entities;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,8 @@ public class CoffeePackController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CoffeePack>> Update(CoffeePack coffeePack)
     {
+        if (!ObjectIdValidator.IsValid(coffeePack.CoffeeId))
+            return BadRequest("Id not valid");
         var result = await coffeePackRepo.Update(coffeePack);
         return result != null ? result : BadRequest();
     }

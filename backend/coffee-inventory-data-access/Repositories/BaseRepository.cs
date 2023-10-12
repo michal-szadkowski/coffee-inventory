@@ -27,7 +27,7 @@ public class BaseRepository<T> : IRepository<T>
 
     public async Task<T?> Delete(string id)
     {
-        if (ObjectId.TryParse(id, out _))
+        if (ObjectIdValidator.IsValid(id))
         {
             var result = await collection.FindOneAndDeleteAsync(x => x.Id == id);
             return result;
@@ -37,7 +37,7 @@ public class BaseRepository<T> : IRepository<T>
 
     public async Task<T?> Get(string id)
     {
-        if (ObjectId.TryParse(id, out _))
+        if (ObjectIdValidator.IsValid(id))
             return (await collection.FindAsync(x => x.Id == id)).SingleOrDefault();
         return default;
     }
@@ -54,11 +54,14 @@ public class BaseRepository<T> : IRepository<T>
 
     public async Task<T?> Update(T item)
     {
-        var filter = Builders<T>.Filter.Eq(x => x.Id, item.Id);
+        if (item == null || !ObjectIdValidator.IsValid(item.Id))
+            return default;
+        string id = item.Id;
+        var filter = Builders<T>.Filter.Eq(x => x.Id, id);
         var result = await collection.ReplaceOneAsync(filter, item);
         if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
             return item;
         else
-            return null;
+            return default;
     }
 }
