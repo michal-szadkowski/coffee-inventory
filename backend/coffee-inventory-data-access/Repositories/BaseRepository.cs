@@ -1,11 +1,12 @@
 using System.Collections.Immutable;
 using DataAccess.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DataAccess.Repositories;
 
 public class BaseRepository<T> : IRepository<T>
-    where T : IEntity
+    where T : class, IEntity
 {
     protected IMongoCollection<T> collection;
 
@@ -19,22 +20,29 @@ public class BaseRepository<T> : IRepository<T>
 
     public async Task<T> Create(T item)
     {
+        item.Id = string.Empty;
         await collection.InsertOneAsync(item);
         return item;
     }
 
-    public async Task<T> Delete(string id)
+    public async Task<T?> Delete(string id)
     {
-        var result = await collection.FindOneAndDeleteAsync(x => x.Id == id);
-        return result;
+        if (ObjectIdValidator.IsValid(id))
+        {
+            var result = await collection.FindOneAndDeleteAsync(x => x.Id == id);
+            return result;
+        }
+        return default;
     }
 
-    public async Task<T> Get(string id)
+    public async Task<T?> Get(string id)
     {
-        return (await collection.FindAsync(x => x.Id == id)).SingleOrDefault();
+        if (ObjectIdValidator.IsValid(id))
+            return (await collection.FindAsync(x => x.Id == id)).SingleOrDefault();
+        return default;
     }
 
-    public async Task<T> Get(Func<T, bool> expression)
+    public async Task<T?> Get(Func<T, bool> expression)
     {
         return (await collection.FindAsync(x => expression(x))).SingleOrDefault();
     }
@@ -44,10 +52,16 @@ public class BaseRepository<T> : IRepository<T>
         return await (await collection.FindAsync(x => true)).ToListAsync();
     }
 
-    public async Task<T> Update(T item)
+    public async Task<T?> Update(T item)
     {
-        var filter = Builders<T>.Filter.Eq(x => x.Id, item.Id);
-        await collection.ReplaceOneAsync(filter, item);
-        return item;
+        if (item == null || !ObjectIdValidator.IsValid(item.Id))
+            return default;
+        string id = item.Id;
+        var filter = Builders<T>.Filter.Eq(x => x.Id, id);
+        var result = await collection.ReplaceOneAsync(filter, item);
+        if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
+            return item;
+        else
+            return default;
     }
 }

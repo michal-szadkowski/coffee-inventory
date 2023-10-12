@@ -17,26 +17,34 @@ public class CoffeeController : ControllerBase
 
     [HttpGet]
     [Route("all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<Coffee>> GetAll()
     {
         return await coffeeRepo.GetAll();
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<Coffee> Create(Coffee coffee)
     {
         return await coffeeRepo.Create(coffee);
     }
 
     [HttpDelete]
-    public async Task<Coffee> Delete(string id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Coffee>> Delete(string id)
     {
-        return await coffeeRepo.Delete(id);
+        var result = await coffeeRepo.Delete(id);
+        return result != null ? result : BadRequest();
     }
 
     [HttpPut]
-    public async Task<Coffee> Update(Coffee coffee)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Coffee>> Update(Coffee coffee)
     {
-        return await coffeeRepo.Update(coffee);
+        var result = await coffeeRepo.Update(coffee);
+        return result != null ? result : BadRequest();
     }
 }
