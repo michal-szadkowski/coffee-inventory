@@ -1,20 +1,22 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace DataAccess.Entities;
 
 public class Brew : IEntity
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
+    [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
     public string Id { get; set; } = string.Empty;
-    public List<BrewUsage> CoffeeUsage { get; set; } = new List<BrewUsage>();
-    public List<BrewUsage> OtherUsage { get; set; } = new List<BrewUsage>();
+    public DateTime Time { get; set; }
+    public List<Usage> Usage { get; set; } = new List<Usage>();
+    public decimal CoffeeOut { get; set; }
+    public int TimeInSeconds { get; set; }
+    public string Comment { get; set; } = string.Empty;
 }
 
-public class BrewUsage
+public class Usage
 {
-    [BsonRepresentation(BsonType.ObjectId)]
-    string Id { get; set; } = string.Empty;
-    double Amount { get; set; } = 0;
+    public string ItemId { get; set; } = string.Empty;
+    public decimal Amount { get; set; } = 0;
 }
