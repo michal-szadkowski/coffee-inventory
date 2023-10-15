@@ -14,6 +14,8 @@ builder.Services.RegisterDataAccessServices(
     builder.Configuration.GetSection("Settings").Get<Settings>()
 );
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
