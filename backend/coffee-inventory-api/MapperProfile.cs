@@ -12,5 +12,6 @@ public class MapperProfile : Profile
         CreateMap<InventoryItem, InventoryItemDTO>().ReverseMap();
         CreateMap<Usage, UsageDTO>().ReverseMap();
         CreateMap<Brew, BrewDTO>().ReverseMap();
+        CreateMap<User, UserDTO>().ReverseMap();
     }
 }
