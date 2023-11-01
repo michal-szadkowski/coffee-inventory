@@ -6,8 +6,21 @@ export namespace CoffeeService {
 
     export async function GetAll() {
         const { data, status } = await axios.get<CoffeeDTO[]>(ApiBaseUrl + "/coffee/all");
-        console.log(data);
-
         return { data, status };
+    }
+
+    export async function Add(coffee: CoffeeDTO) {
+        const { data, status } = await axios.post<CoffeeDTO>(ApiBaseUrl + "/coffee", coffee);
+        return data;
+    }
+
+    export async function Edit(coffee: CoffeeDTO) {
+        const { data, status } = await axios.patch<CoffeeDTO>(ApiBaseUrl + "/coffee", coffee);
+        return data;
+    }
+
+    export async function Delete(id: string) {
+        const { data, status } = await axios.delete<CoffeeDTO>(ApiBaseUrl + "/coffee/", { params: { id: id } });
+        return data;
     }
 }
