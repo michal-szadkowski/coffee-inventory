@@ -19,10 +19,15 @@ public static class RegisterServices
         collection.AddSingleton(
             x => new MongoAccess(settings.MongoDBConnection, settings.MongoDBDatabase)
         );
+
         collection.AddSingleton<IRepository<Coffee>, CoffeeRepository>();
         collection.AddSingleton<IRepository<InventoryItem>, InventoryItemRepository>();
         collection.AddSingleton<IRepository<Brew>, BrewRepository>();
+        collection.AddSingleton<IRepository<User>, UserRepository>();
+        collection.AddSingleton<IRepository<Payment>, PaymentRepository>();
+
         collection.AddSingleton<InventoryService>();
         collection.AddSingleton<UsageService>();
+        collection.AddSingleton<PaymentService>();
     }
 }
