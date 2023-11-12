@@ -11,16 +11,16 @@ export namespace CoffeeService {
 
     export async function Add(coffee: CoffeeDTO) {
         const { data, status } = await axios.post<CoffeeDTO>(ApiBaseUrl + "/coffee", coffee);
-        return data;
+        return { data, status };
     }
 
     export async function Edit(coffee: CoffeeDTO) {
-        const { data, status } = await axios.patch<CoffeeDTO>(ApiBaseUrl + "/coffee", coffee);
-        return data;
+        const { data, status } = await axios.put<CoffeeDTO>(ApiBaseUrl + "/coffee", coffee);
+        return { data, status };
     }
 
     export async function Delete(id: string) {
         const { data, status } = await axios.delete<CoffeeDTO>(ApiBaseUrl + "/coffee/", { params: { id: id } });
-        return data;
+        return { data, status };
     }
 }
