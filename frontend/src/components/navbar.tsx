@@ -9,6 +9,12 @@ export default function Navbar() {
             <Link className="col" to="/coffee">
                 <h2>kawa</h2>
             </Link>
+            <Link className="col" to="/inventory">
+                <h2>inwentarz</h2>
+            </Link>
+            <Link className="col" to="/inventory">
+                <h2>parzenie</h2>
+            </Link>
         </div>
     );
 }

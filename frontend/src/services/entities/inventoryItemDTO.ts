@@ -5,7 +5,7 @@ export interface InventoryItemDTO
     name: string,
     type: InventoryItemTypeDTO,
     startDate: Date,
-    endDate: Date,
+    endDate?: Date,
 
     amount: number,
     amountUsed: number,

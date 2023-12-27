@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function CoffeeWizard({ coffee, submit, close }: { coffee?: CoffeeDTO, submit: (arg: CoffeeDTO) => void, close?: () => void }) {
