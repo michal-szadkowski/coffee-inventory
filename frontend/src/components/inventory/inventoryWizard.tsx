@@ -3,10 +3,11 @@ import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function InventoryWizard({ item, submit, close, coffeeList }: { item?: InventoryItemDTO, submit: (arg: InventoryItemDTO) => void, close?: () => void, coffeeList: CoffeeDTO[] }) {
-    console.log(item)
     let [itemEdit, setItemEdit] = useState<InventoryItemDTO>(item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO);
 
-    useEffect(() => { setItemEdit(item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO) }, [item])
+    useEffect(() => {
+        setItemEdit(item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO)
+    }, [item])
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setItemEdit({ ...itemEdit, [e?.currentTarget.id]: e.currentTarget.value })
@@ -18,7 +19,6 @@ export default function InventoryWizard({ item, submit, close, coffeeList }: { i
             coffeeId: e.target.checked ? itemEdit.coffeeId !== "" ? itemEdit.coffeeId : coffeeList[0].id : ""
         });
     }
-    console.log(itemEdit)
     return (
         <div className="border border-1 p-3 form" style={{ width: "25rem" }}>
 

@@ -4,6 +4,7 @@ public class BrewDTO
 {
     public string Id { get; set; } = string.Empty;
     public List<UsageDTO> Usage { get; set; } = new List<UsageDTO>();
+    public DateTime Time { get; set; }
     public decimal CoffeeOut { get; set; }
     public int TimeInSeconds { get; set; }
     public string Comment { get; set; } = string.Empty;

@@ -18,7 +18,6 @@ public class InventoryItem : IEntity
     public DateOnly? EndDate { get; set; }
 
     public decimal Amount { get; set; }
-    public decimal AmountUsed { get; set; }
     public decimal Price { get; set; }
 }
 

@@ -12,7 +12,7 @@ export default function Navbar() {
             <Link className="col" to="/inventory">
                 <h2>inwentarz</h2>
             </Link>
-            <Link className="col" to="/inventory">
+            <Link className="col" to="/brews">
                 <h2>parzenie</h2>
             </Link>
         </div>

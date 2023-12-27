@@ -18,7 +18,7 @@ export default function InventoryView() {
 
     useEffect(() => {
         if (load === true) {
-            InventoryService.GetAll().then(x => setInventory(x.formatdata)).then(() => setLoad(false));
+            InventoryService.GetAll().then(x => setInventory(x.data)).then(() => setLoad(false));
             CoffeeService.GetAll().then(x => setCoffee(x.data)).then(() => setLoad(false));
         }
     }, [load])

@@ -7,22 +7,25 @@ export namespace InventoryService {
     export async function GetAll() {
         const { data, status } = await axios.get<InventoryItemDTO[]>(ApiBaseUrl + "/inventory/all");
         let formatdata = data.map(x => FormatBack(x));
-        return { formatdata, status };
+        return { data: formatdata, status };
     }
 
     export async function Add(item: InventoryItemDTO) {
         const { data, status } = await axios.post<InventoryItemDTO>(ApiBaseUrl + "/inventory", Format(item));
-        return { data, status };
+        let formatdata = FormatBack(data);
+        return { data: formatdata, status };
     }
 
     export async function Edit(item: InventoryItemDTO) {
         const { data, status } = await axios.put<InventoryItemDTO>(ApiBaseUrl + "/inventory", Format(item));
-        return { data, status };
+        let formatdata = FormatBack(data);
+        return { data: formatdata, status };
     }
 
     export async function Delete(id: string) {
         const { data, status } = await axios.delete<InventoryItemDTO>(ApiBaseUrl + "/inventory/", { params: { id: id } });
-        return { data, status };
+        let formatdata = FormatBack(data);
+        return { data: formatdata, status };
     }
 
     function Format(item: InventoryItemDTO) {
