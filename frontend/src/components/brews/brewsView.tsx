@@ -5,15 +5,13 @@ import { InventoryItemDTO } from "../../services/entities/inventoryItemDTO";
 import { BrewViewElement } from "./brewViewElement";
 import BrewWizard from "./brewWizard";
 import { InventoryService } from "../../services/inventoryService";
-import CoffeeDTO from "../../services/entities/coffeeDTO";
-import { CoffeeService } from "../../services/coffeeService";
+
 
 export default function BrewsView() {
 
     let [brews, setBrews] = useState<BrewDTO[]>([]);
     let [brewEdited, setEdited] = useState<BrewDTO | undefined>();
 
-    let [coffee, setCoffee] = useState<CoffeeDTO[]>([]);
     let [inventory, setInventory] = useState<InventoryItemDTO[]>([]);
 
     let [load, setLoad] = useState(true);
@@ -22,7 +20,6 @@ export default function BrewsView() {
         if (load === true) {
             BrewService.GetAll().then(x => setBrews(x.data)).then(() => setLoad(false));
             InventoryService.GetAll().then(x => setInventory(x.data)).then(() => setLoad(false));
-            CoffeeService.GetAll().then(x => setCoffee(x.data)).then(() => setLoad(false));
         }
     }, [load])
     const extendedBrews = brews.map(x => ({ brew: x, items: inventory.filter(y => x.usage.map(z => z.itemId).includes(y.id)) }))

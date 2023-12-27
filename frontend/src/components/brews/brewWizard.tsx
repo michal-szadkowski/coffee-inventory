@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/inventoryItemDTO";
+import { InventoryItemDTO } from "../../services/entities/inventoryItemDTO";
 import BrewDTO, { UsageDTO } from "../../services/entities/brewDTO";
 import DateTimePicker from "../dateTimePicker";
 
@@ -13,9 +13,6 @@ export default function BrewWizard({ item, submit, close, inventory }: { item?: 
         setItemEdit(item ?? { time: dateNoSec(new Date()), usage: [] as UsageDTO[] } as BrewDTO)
     }, [item])
 
-    function handleChange(e: ChangeEvent<HTMLInputElement>) {
-        setItemEdit({ ...itemEdit, [e?.currentTarget.id]: e.currentTarget.value })
-    }
     function handleChangeArea(e: ChangeEvent<HTMLTextAreaElement>) {
         setItemEdit({ ...itemEdit, [e?.currentTarget.id]: e.currentTarget.value })
     }
