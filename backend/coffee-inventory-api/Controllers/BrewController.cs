@@ -26,7 +26,7 @@ public class BrewController : ControllerBase
     public async Task<ActionResult<BrewDTO[]>> GetAll()
     {
         var result = await brewRepo.GetAll();
-        return mapper.Map<BrewDTO[]>(result);
+        return mapper.Map<BrewDTO[]>(result).OrderByDescending(x=>x.Time).ToArray();
     }
 
     [HttpPost]

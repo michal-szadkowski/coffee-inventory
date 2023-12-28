@@ -59,7 +59,7 @@ public class BaseRepository<T> : IRepository<T>
         string id = item.Id;
         var filter = Builders<T>.Filter.Eq(x => x.Id, id);
         var result = await collection.ReplaceOneAsync(filter, item);
-        if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
+        if (result.MatchedCount > 0)
             return item;
         else
             return default;

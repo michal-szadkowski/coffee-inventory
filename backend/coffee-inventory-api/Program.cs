@@ -18,6 +18,17 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+builder.Services.AddCors(
+    o =>
+        o.AddPolicy(
+            "all",
+            builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            }
+        )
+);
+
 var app = builder.Build();
 
 app.MapControllers();
@@ -28,6 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("all");
 
 // app.UseHttpsRedirection();
 

@@ -43,6 +43,7 @@ public class InventoryService
             item.Type == InventoryItemTypeDTO.Other || (await coffeeRepo.Get(item.CoffeeId)) != null
         )
         {
+            item.AmountUsed = 0;
             var result = await inventoryRepo.Create(mapper.Map<InventoryItem>(item));
             var dto = mapper.Map<InventoryItemDTO>(result);
 
@@ -70,11 +71,13 @@ public class InventoryService
     public async Task<List<InventoryItemDTO>> FillUsages(List<InventoryItemDTO> items)
     {
         var usages = await usage.GetTotalUsageOf(items.Select(x => x.Id));
+        items.ForEach(x => x.AmountUsed = 0);
         foreach (var usage in usages)
         {
             var item = items.First(x => x.Id == usage.ItemId);
             item.AmountUsed = usage.Amount;
         }
+
         return items;
     }
 }
