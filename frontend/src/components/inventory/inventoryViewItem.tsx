@@ -10,9 +10,11 @@ export function InventoryViewItem({ item, coffee, actions }: { item: InventoryIt
                 </div>
                 <h4 className="card-title">{item.name}</h4>
                 <p>{TypeText(item.type)}</p>
-                <p>{item.amountUsed} / {item.amount}</p>
+                <p>{item.amount - item.amountUsed} / {item.amount}</p>
                 <p>{item.price} zł</p>
                 <p>{item.startDate.toISOString().slice(0, 10)}</p>
+                {item.endDate !== undefined && (<p>{item.endDate?.toISOString().slice(0, 10)}</p>)}
+
                 {actions}
             </div>
         </div>)

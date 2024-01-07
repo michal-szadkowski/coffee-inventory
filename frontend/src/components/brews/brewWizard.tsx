@@ -2,55 +2,70 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { InventoryItemDTO } from "../../services/entities/inventoryItemDTO";
 import BrewDTO, { UsageDTO } from "../../services/entities/brewDTO";
 import DateTimePicker from "../dateTimePicker";
+import CoffeeDTO from "../../services/entities/coffeeDTO";
 
-export default function BrewWizard({ item, submit, close, inventory }: { item?: BrewDTO, submit: (brew: BrewDTO) => void, close?: () => void, inventory: InventoryItemDTO[] }) {
+export default function BrewWizard({ brew, submit, close, inventory }: { brew?: BrewDTO, submit: (brew: BrewDTO) => void, close?: () => void, inventory: { inv: InventoryItemDTO, coffee: CoffeeDTO | undefined }[] }) {
 
-    let [itemEdit, setItemEdit] = useState<BrewDTO>(item ?? { time: dateNoSec(new Date()), usage: [] as UsageDTO[] } as BrewDTO);
+    let [brewEdit, setBrewEdit] = useState<BrewDTO>(getDefault());
 
-    let [newRow, setNewRow] = useState<UsageDTO>({ itemId: inventory[0]?.id ?? "", amount: 0 } as UsageDTO);
+    let [newRow, setNewRow] = useState<UsageDTO>({ itemId: inventory[0]?.inv.id ?? "", amount: 0 } as UsageDTO);
 
     useEffect(() => {
-        setItemEdit(item ?? { time: dateNoSec(new Date()), usage: [] as UsageDTO[] } as BrewDTO)
-    }, [item])
+        setBrewEdit(getDefault())
+    }, [brew, inventory])
 
     function handleChangeArea(e: ChangeEvent<HTMLTextAreaElement>) {
-        setItemEdit({ ...itemEdit, [e?.currentTarget.id]: e.currentTarget.value })
+        setBrewEdit({ ...brewEdit, [e?.currentTarget.id]: e.currentTarget.value })
     }
     function dateNoSec(date: Date) {
         date.setSeconds(0, 0);
         return date;
     }
+
+    function getDefault() {
+        return brew ?? { time: dateNoSec(new Date()), usage: [] as UsageDTO[] } as BrewDTO
+    };
+
+    function submitAndClear() {
+        submit(brewEdit)
+        setBrewEdit(getDefault());
+    }
+
     return (
-        <div className="border border-1 p-3 form" style={{ width: "25rem" }}>
-
-            <label className="form-label mt-3">Data parzenia:</label>
-
-            <DateTimePicker value={itemEdit.time} onChange={(date) => setItemEdit({ ...itemEdit, time: date })} />
-
-            <label className="form-label mt-3">Komentarz:</label>
-            <textarea className="form-control" id="comment" value={itemEdit.comment || ""} onChange={(e) => handleChangeArea(e)} />
+        <div className="border border-1 p-3 form" style={{ maxWidth: "30rem" }}>
 
             <div className="mt-3">
-                {itemEdit.usage.map((x, i) => {
-                    let item = inventory.find(y => y.id === x.itemId);
+                {brewEdit.usage.map((x, i) => {
+                    let item = inventory.find(y => y.inv.id === x.itemId);
                     return (<div className="w-100 m-0" key={i}>
-                        {item?.name} {item?.amountUsed} + {x.amount} / {item?.amount}
-                        <button className="btn" onClick={() => setItemEdit({ ...itemEdit, usage: [...itemEdit.usage.slice(0, i), ...itemEdit.usage.slice(i + 1)] })}>❌</button>
+                        {item?.coffee?.roaster} {item?.coffee?.origin} {item?.coffee?.name} {item?.inv.name} <i>{x.amount}</i>
+                        <button className="btn" onClick={() => setBrewEdit({ ...brewEdit, usage: [...brewEdit.usage.slice(0, i), ...brewEdit.usage.slice(i + 1)] })}>❌</button>
                     </div>)
                 })}
 
                 <div className="input-group">
-                    <select className="form-control" value={newRow.itemId} onChange={(e) => setNewRow({ ...newRow, itemId: e.target.value })}>
-                        {inventory.map((x, i) => (<option key={i} value={x.id}>{x.name} {x.amountUsed}/{x.amount}</option>))}
+                    <select className="form-control w-50" value={newRow.itemId} onChange={(e) => setNewRow({ ...newRow, itemId: e.target.value })}>
+                        {inventory.map((x, i) => (
+                            <option key={i} value={x.inv.id}>{x?.coffee?.roaster} {x?.coffee?.origin} {x?.coffee?.name} {x.inv.name}</option>
+                        ))}
                     </select>
                     <input className="form-control" type="number" value={newRow.amount} onChange={(e) => setNewRow({ ...newRow, amount: e.target.valueAsNumber })}></input>
+                    <button className="btn btn-success" onClick={() => { setBrewEdit({ ...brewEdit, usage: [...brewEdit.usage, newRow] }); setNewRow({ itemId: inventory[0].inv.id, amount: 0 }) }}>+</button>
                 </div>
 
-                <button className="btn btn-success mt-2 mb-1" onClick={() => { setItemEdit({ ...itemEdit, usage: [...itemEdit.usage, newRow] }); setNewRow({ itemId: inventory[0].id, amount: 0 }) }}>+</button>
+
             </div>
 
+            <label className="form-label mt-3">Data parzenia:</label>
+
+            <DateTimePicker value={brewEdit.time} onChange={(date) => setBrewEdit({ ...brewEdit, time: date })} />
+
+            <label className="form-label mt-3">Komentarz:</label>
+            <textarea className="form-control" id="comment" value={brewEdit.comment || ""} onChange={(e) => handleChangeArea(e)} />
+
+
             <div className="mt-2 me">
-                <button className="btn btn-success me-3" onClick={() => submit(itemEdit)}>Zapisz</button>
+                <button className="btn btn-success me-3" onClick={() => submitAndClear()}>Zapisz</button>
                 {close !== undefined &&
                     <button className="btn btn-warning " onClick={() => close()}>Anuluj</button>}
             </div>

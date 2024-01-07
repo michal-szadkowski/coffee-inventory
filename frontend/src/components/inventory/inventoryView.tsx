@@ -5,6 +5,7 @@ import { InventoryViewItem } from "./inventoryViewItem";
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 import { CoffeeService } from "../../services/coffeeService";
 import InventoryWizard from "./inventoryWizard";
+import ExpandButton from "../expandButton";
 
 
 export default function InventoryView() {
@@ -24,9 +25,15 @@ export default function InventoryView() {
     }, [load])
 
     let extendedInv = inventory.map(x => ({ item: x, coffee: coffee.find(y => y.id === x.coffeeId) }));
-    console.log(extendedInv);
     return (
         <div>
+            <div className="m-4" style={{ width: "fit-content" }}>
+                <h5>dodaj nowy</h5>
+                <ExpandButton>
+                    <InventoryWizard submit={(x) => { InventoryService.Add(x).then(x => setLoad(true)) }} coffeeList={coffee}></InventoryWizard>
+                </ExpandButton>
+            </div>
+
             {extendedInv.map((x, i) =>
             (<InventoryViewItem item={x.item} coffee={x.coffee} key={i} actions={
                 <div>
@@ -42,7 +49,6 @@ export default function InventoryView() {
                     coffeeList={coffee} />)}
 
 
-            <InventoryWizard submit={(x) => { console.log(x); InventoryService.Add(x).then(x => setLoad(true)) }} coffeeList={coffee}></InventoryWizard>
         </div>
     )
 }

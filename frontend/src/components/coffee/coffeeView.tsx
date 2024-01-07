@@ -3,6 +3,7 @@ import { CoffeeService } from "../../services/coffeeService"
 import CoffeeDTO from "../../services/entities/coffeeDTO"
 import { CoffeeViewElement } from "./coffeeViewElement"
 import CoffeeWizard from "./coffeeWizard"
+import ExpandButton from "../expandButton"
 
 export default function CoffeeView() {
 
@@ -18,6 +19,15 @@ export default function CoffeeView() {
 
     return (
         <div>
+            <div className="m-4" style={{ width: "fit-content" }}>
+                <h5>dodaj nową</h5>
+                <ExpandButton>
+                    <CoffeeWizard
+                        coffee={undefined}
+                        submit={(x) => {CoffeeService.Add(x).then(() => setLoad(true)) }} />
+                </ExpandButton>
+            </div>
+
             {coffee.map((x, i) =>
             (<CoffeeViewElement coffee={x} key={i}
                 actions={
@@ -32,12 +42,7 @@ export default function CoffeeView() {
                     submit={(x) => { CoffeeService.Edit(x).then(() => setEdited(undefined)).then(() => setLoad(true)) }}
                     close={() => setEdited(undefined)} />)}
 
-            <div className="m-4">
-                <h5>dodaj nową</h5>
-                <CoffeeWizard
-                    coffee={undefined}
-                    submit={(x) => { console.log(x); CoffeeService.Add(x).then(() => setLoad(true)) }} />
-            </div>
+
         </div>
     )
 }

@@ -3,15 +3,26 @@ import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function CoffeeWizard({ coffee, submit, close }: { coffee?: CoffeeDTO, submit: (arg: CoffeeDTO) => void, close?: () => void }) {
 
-    let [coffeeEdit, setCoffeeEdit] = useState<CoffeeDTO>(coffee ?? {} as CoffeeDTO);
+    let [coffeeEdit, setCoffeeEdit] = useState<CoffeeDTO>(getDefault());
 
-    useEffect(() => { setCoffeeEdit(coffee ?? {} as CoffeeDTO) }, [coffee])
+    useEffect(() => {
+        setCoffeeEdit(getDefault())
+    }, [coffee])
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setCoffeeEdit({ ...coffeeEdit, [e?.currentTarget.id]: e.currentTarget.value })
     }
     function handleChangeArea(e: ChangeEvent<HTMLTextAreaElement>) {
         setCoffeeEdit({ ...coffeeEdit, [e?.currentTarget.id]: e.currentTarget.value })
+    }
+
+    function getDefault() {
+        return coffee ?? {} as CoffeeDTO
+    };
+
+    function submitAndClear() {
+        submit(coffeeEdit)
+        setCoffeeEdit(getDefault);
     }
 
     return (
@@ -30,7 +41,7 @@ export default function CoffeeWizard({ coffee, submit, close }: { coffee?: Coffe
             <textarea className="form-control" id="description" value={coffeeEdit.description} onChange={(e) => handleChangeArea(e)} />
 
             <div className="mt-2 me">
-                <button className="btn btn-success me-3" onClick={() => submit(coffeeEdit)}>Zapisz</button>
+                <button className="btn btn-success me-3" onClick={() => submitAndClear()}>Zapisz</button>
                 {close !== undefined &&
                     <button className="btn btn-warning " onClick={() => close()}>Anuluj</button>}
             </div>
