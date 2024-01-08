@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
     return (
-        <div className="row w-100 border border-3 m-0" >
-            <Link className="col" to="/">
-                <h2>coffee-inventory</h2>
+        <div className="flex-wrap d-flex justify-content-between flex-row w-100 border border-3 m-0" >
+            <Link className="px-1" to="/">
+                <h3>coffee-inventory</h3>
             </Link>
-            <Link className="col" to="/coffee">
-                <h2>kawa</h2>
+            <Link className="px-2" to="/coffee">
+                <h3>kawa</h3>
             </Link>
-            <Link className="col" to="/inventory">
-                <h2>inwentarz</h2>
+            <Link className="px-2" to="/inventory">
+                <h3>inwentarz</h3>
             </Link>
-            <Link className="col" to="/brews">
-                <h2>parzenie</h2>
+            <Link className="px-2" to="/brews">
+                <h3>parzenie</h3>
             </Link>
         </div>
     );

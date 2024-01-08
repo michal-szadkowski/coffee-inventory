@@ -26,7 +26,7 @@ export default function CoffeeWizard({ coffee, submit, close }: { coffee?: Coffe
     }
 
     return (
-        <div className="border border-1 p-3 form" style={{ width: "25rem" }}>
+        <div className="border border-1 p-3 form my-1" style={{ maxWidth: "30rem" }}>
 
             <label className="form-label mt-3">Nazwa:</label>
             <input className="form-control" type="text" id="name" value={coffeeEdit.name} onChange={(e) => handleChange(e)} />

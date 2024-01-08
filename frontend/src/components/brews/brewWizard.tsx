@@ -32,7 +32,7 @@ export default function BrewWizard({ brew, submit, close, inventory }: { brew?: 
     }
 
     return (
-        <div className="border border-1 p-3 form" style={{ maxWidth: "30rem" }}>
+        <div className="border border-1 p-3 form my-1" style={{ maxWidth: "30rem" }}>
 
             <div className="mt-3">
                 {brewEdit.usage.map((x, i) => {

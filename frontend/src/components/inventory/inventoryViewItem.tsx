@@ -3,17 +3,17 @@ import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/
 
 export function InventoryViewItem({ item, coffee, actions }: { item: InventoryItemDTO, coffee?: CoffeeDTO, actions?: React.ReactNode }) {
     return (
-        <div className="card border border-1 m-2" style={{ width: "18rem" }}>
-            <div className="card-body">
-                <div>
+        <div className="col-12 col-xxl-4 my-2 mx-xxl-0">
+            <div className="card-body card border border-1 m-xxl-2">
+                <div className="card-text">
                     <p>{coffee?.roaster} {coffee?.name} {coffee?.origin}</p>
                 </div>
                 <h4 className="card-title">{item.name}</h4>
-                <p>{TypeText(item.type)}</p>
-                <p>{item.amount - item.amountUsed} / {item.amount}</p>
-                <p>{item.price} zł</p>
-                <p>{item.startDate.toISOString().slice(0, 10)}</p>
-                {item.endDate !== undefined && (<p>{item.endDate?.toISOString().slice(0, 10)}</p>)}
+                <div className="card-text">{TypeText(item.type)}</div>
+                <div className="card-text">{item.amount - item.amountUsed} / {item.amount}</div>
+                <div className="card-text">{item.price} zł</div>
+                <div className="card-text">{item.startDate.toISOString().slice(0, 10)}</div>
+                {item.endDate !== undefined && (<div className="card-text">{item.endDate?.toISOString().slice(0, 10)}</div>)}
 
                 {actions}
             </div>
