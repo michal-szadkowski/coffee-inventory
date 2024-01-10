@@ -26,19 +26,19 @@ export default function CoffeeWizard({ coffee, submit, close }: { coffee?: Coffe
     }
 
     return (
-        <div className="border border-1 p-3 form my-1" style={{ maxWidth: "30rem" }}>
+        <div className="border border-2 p-2 p-xxl-3 form my-1 bg-body rounded-2" style={{ maxWidth: "30rem" }}>
 
-            <label className="form-label mt-3">Nazwa:</label>
-            <input className="form-control" type="text" id="name" value={coffeeEdit.name} onChange={(e) => handleChange(e)} />
+            <label className="form-label">Nazwa:</label>
+            <input className="form-control" type="text" id="name" value={coffeeEdit.name || ""} onChange={(e) => handleChange(e)} />
 
             <label className="form-label mt-3">Palarnia:</label>
-            <input className="form-control" type="text" id="roaster" value={coffeeEdit.roaster} onChange={(e) => handleChange(e)} />
+            <input className="form-control" type="text" id="roaster" value={coffeeEdit.roaster || ""} onChange={(e) => handleChange(e)} />
 
             <label className="form-label mt-3">Pochodzenie:</label>
-            <input className="form-control" type="text" id="origin" value={coffeeEdit.origin} onChange={(e) => handleChange(e)} />
+            <input className="form-control" type="text" id="origin" value={coffeeEdit.origin || ""} onChange={(e) => handleChange(e)} />
 
             <label className="form-label mt-3">Opis:</label>
-            <textarea className="form-control" id="description" value={coffeeEdit.description} onChange={(e) => handleChangeArea(e)} />
+            <textarea className="form-control" id="description" value={coffeeEdit.description || ""} onChange={(e) => handleChangeArea(e)} />
 
             <div className="mt-2 me">
                 <button className="btn btn-success me-3" onClick={() => submitAndClear()}>Zapisz</button>

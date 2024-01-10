@@ -30,7 +30,7 @@ export default function BrewsView() {
         }
     }, [load])
     const extendedBrews = brews.map(x => ({ brew: x, items: inventory.filter(y => x.usage.map(z => z.itemId).includes(y.id)) }))
-    const extendedInv = inventory.map(x => ({ inv: x, coffee: coffee.find(y => y.id === x.coffeeId) }));
+    const extendedInv = inventory.map(x => ({ inv: x, coffee: coffee.find(y => y.id === x.coffeeId) })).filter(x => x.inv.endDate === null || x.inv.endDate === undefined);
     return (
         <Grid
             left={

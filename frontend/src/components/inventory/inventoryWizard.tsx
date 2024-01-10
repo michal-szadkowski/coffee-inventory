@@ -33,7 +33,7 @@ export default function InventoryWizard({ item, submit, close, coffeeList }: { i
     }
 
     return (
-        <div className="border border-1 p-3 form my-1" style={{ maxWidth: "30rem" }}>
+        <div className="border border-1 p-3 form my-1 card bg-body rounded-2" style={{ maxWidth: "30rem" }}>
 
             <label className="form-label mt-3">Nazwa:</label>
             <input className="form-control" type="text" id="name" value={itemEdit.name || ""} onChange={(e) => handleChange(e)} />

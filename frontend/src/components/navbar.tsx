@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
     return (
-        <div className="flex-wrap d-flex justify-content-between flex-row w-100 border border-3 m-0" >
+        <div className="flex-wrap d-flex justify-content-between flex-row w-100 border-bottom border-2 border-primary shadow-sm m-0 bg-body" >
             <Link className="px-1" to="/">
                 <h3>coffee-inventory</h3>
             </Link>
