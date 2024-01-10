@@ -2,11 +2,11 @@ version: '3'
 
 services:
   web:
-    restart: unless-stoped
+    restart: unless-stopped
     build: ./frontend
     network_mode: host
   api:
-    restart: unless-stoped
+    restart: unless-stopped
     build: ./backend
     network_mode: host
     
