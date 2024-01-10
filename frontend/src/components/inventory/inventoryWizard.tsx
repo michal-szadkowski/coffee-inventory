@@ -3,24 +3,37 @@ import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function InventoryWizard({ item, submit, close, coffeeList }: { item?: InventoryItemDTO, submit: (arg: InventoryItemDTO) => void, close?: () => void, coffeeList: CoffeeDTO[] }) {
-    let [itemEdit, setItemEdit] = useState<InventoryItemDTO>(item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO);
+
+    let [itemEdit, setItemEdit] = useState<InventoryItemDTO>(getDefault());
 
     useEffect(() => {
-        setItemEdit(item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO)
+        setItemEdit(getDefault())
     }, [item])
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setItemEdit({ ...itemEdit, [e?.currentTarget.id]: e.currentTarget.value })
     }
+
     function handleTypeChange(e: ChangeEvent<HTMLInputElement>) {
         setItemEdit({
             ...itemEdit,
             type: e.target.checked ? InventoryItemTypeDTO.Coffee : InventoryItemTypeDTO.Other,
-            coffeeId: e.target.checked ? itemEdit.coffeeId !== "" ? itemEdit.coffeeId : coffeeList[0].id : ""
+            coffeeId: e.target.checked ?
+                itemEdit.coffeeId !== "" && itemEdit.coffeeId !== undefined ? itemEdit.coffeeId : coffeeList.at(0)?.id ?? "" : ""
         });
     }
+
+    function getDefault() {
+        return item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO
+    };
+
+    function submitAndClear() {
+        submit(itemEdit)
+        setItemEdit(getDefault());
+    }
+
     return (
-        <div className="border border-1 p-3 form" style={{ width: "25rem" }}>
+        <div className="border border-1 p-3 form my-1 card bg-body rounded-2" style={{ maxWidth: "30rem" }}>
 
             <label className="form-label mt-3">Nazwa:</label>
             <input className="form-control" type="text" id="name" value={itemEdit.name || ""} onChange={(e) => handleChange(e)} />
@@ -53,7 +66,7 @@ export default function InventoryWizard({ item, submit, close, coffeeList }: { i
             </div>
 
             <div className="mt-2 me">
-                <button className="btn btn-success me-3" onClick={() => submit(itemEdit)}>Zapisz</button>
+                <button className="btn btn-success me-3" onClick={() => submitAndClear()}>Zapisz</button>
                 {close !== undefined &&
                     <button className="btn btn-warning " onClick={() => close()}>Anuluj</button>}
             </div>

@@ -3,9 +3,11 @@ import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function CoffeeWizard({ coffee, submit, close }: { coffee?: CoffeeDTO, submit: (arg: CoffeeDTO) => void, close?: () => void }) {
 
-    let [coffeeEdit, setCoffeeEdit] = useState<CoffeeDTO>(coffee ?? {} as CoffeeDTO);
+    let [coffeeEdit, setCoffeeEdit] = useState<CoffeeDTO>(getDefault());
 
-    useEffect(() => { setCoffeeEdit(coffee ?? {} as CoffeeDTO) }, [coffee])
+    useEffect(() => {
+        setCoffeeEdit(getDefault())
+    }, [coffee])
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setCoffeeEdit({ ...coffeeEdit, [e?.currentTarget.id]: e.currentTarget.value })
@@ -14,23 +16,32 @@ export default function CoffeeWizard({ coffee, submit, close }: { coffee?: Coffe
         setCoffeeEdit({ ...coffeeEdit, [e?.currentTarget.id]: e.currentTarget.value })
     }
 
-    return (
-        <div className="border border-1 p-3 form" style={{ width: "25rem" }}>
+    function getDefault() {
+        return coffee ?? {} as CoffeeDTO
+    };
 
-            <label className="form-label mt-3">Nazwa:</label>
-            <input className="form-control" type="text" id="name" value={coffeeEdit.name} onChange={(e) => handleChange(e)} />
+    function submitAndClear() {
+        submit(coffeeEdit)
+        setCoffeeEdit(getDefault);
+    }
+
+    return (
+        <div className="border border-2 p-2 p-xxl-3 form my-1 bg-body rounded-2" style={{ maxWidth: "30rem" }}>
+
+            <label className="form-label">Nazwa:</label>
+            <input className="form-control" type="text" id="name" value={coffeeEdit.name || ""} onChange={(e) => handleChange(e)} />
 
             <label className="form-label mt-3">Palarnia:</label>
-            <input className="form-control" type="text" id="roaster" value={coffeeEdit.roaster} onChange={(e) => handleChange(e)} />
+            <input className="form-control" type="text" id="roaster" value={coffeeEdit.roaster || ""} onChange={(e) => handleChange(e)} />
 
             <label className="form-label mt-3">Pochodzenie:</label>
-            <input className="form-control" type="text" id="origin" value={coffeeEdit.origin} onChange={(e) => handleChange(e)} />
+            <input className="form-control" type="text" id="origin" value={coffeeEdit.origin || ""} onChange={(e) => handleChange(e)} />
 
             <label className="form-label mt-3">Opis:</label>
-            <textarea className="form-control" id="description" value={coffeeEdit.description} onChange={(e) => handleChangeArea(e)} />
+            <textarea className="form-control" id="description" value={coffeeEdit.description || ""} onChange={(e) => handleChangeArea(e)} />
 
             <div className="mt-2 me">
-                <button className="btn btn-success me-3" onClick={() => submit(coffeeEdit)}>Zapisz</button>
+                <button className="btn btn-success me-3" onClick={() => submitAndClear()}>Zapisz</button>
                 {close !== undefined &&
                     <button className="btn btn-warning " onClick={() => close()}>Anuluj</button>}
             </div>

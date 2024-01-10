@@ -39,7 +39,7 @@ export namespace InventoryService {
         return {
             ...item,
             startDate: new Date(item.startDate),
-            endDate: item.endDate !== undefined ? new Date(item.endDate) : undefined
+            endDate: item.endDate !== undefined && item.endDate !== null ? new Date(item.endDate) : undefined
         }
     }
 }

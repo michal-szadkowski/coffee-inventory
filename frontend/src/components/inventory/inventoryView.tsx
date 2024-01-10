@@ -5,6 +5,8 @@ import { InventoryViewItem } from "./inventoryViewItem";
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 import { CoffeeService } from "../../services/coffeeService";
 import InventoryWizard from "./inventoryWizard";
+import ExpandButton from "../expandButton";
+import Grid from "../grid";
 
 
 export default function InventoryView() {
@@ -24,25 +26,38 @@ export default function InventoryView() {
     }, [load])
 
     let extendedInv = inventory.map(x => ({ item: x, coffee: coffee.find(y => y.id === x.coffeeId) }));
-    console.log(extendedInv);
     return (
-        <div>
-            {extendedInv.map((x, i) =>
-            (<InventoryViewItem item={x.item} coffee={x.coffee} key={i} actions={
+        <Grid
+            left={
                 <div>
-                    <button onClick={() => setEdited(x.item)} className="btn btn-info m-1">Edytuj</button>
-                    <button onClick={() => InventoryService.Delete(x.item.id).then(() => setLoad(true))} className="btn btn-danger">Usuń</button>
-                </div>} />
-            ))}
+                    <span className="h5">dodaj nowy</span>
+                    <ExpandButton>
+                        <InventoryWizard submit={(x) => { InventoryService.Add(x).then(x => setLoad(true)) }} coffeeList={coffee}></InventoryWizard>
+                    </ExpandButton>
+                    {itemEdited !== undefined && (
+                        <>
+                            <h5>edycja</h5>
+                            <InventoryWizard item={itemEdited}
+                                submit={(x) => { InventoryService.Edit(x).then(() => setEdited(undefined)).then(() => setLoad(true)); }}
+                                close={() => setEdited(undefined)}
+                                coffeeList={coffee} />
+                        </>)}
+                </div>
+            }
 
-            {itemEdited !== undefined && (
-                <InventoryWizard item={itemEdited}
-                    submit={(x) => { InventoryService.Edit(x).then(() => setEdited(undefined)).then(() => setLoad(true)) }}
-                    close={() => setEdited(undefined)}
-                    coffeeList={coffee} />)}
+            center={
+                < >
+                    {extendedInv.map((x, i) =>
+                    (<InventoryViewItem item={x.item} coffee={x.coffee} key={i} actions={
+                        <div>
+                            <button onClick={() => setEdited(x.item)} className="btn btn-info m-1">Edytuj</button>
+                            <button onClick={() => InventoryService.Delete(x.item.id).then(() => setLoad(true))} className="btn btn-danger">Usuń</button>
+                        </div>} />
+                    ))}
+                </>
 
+            }
 
-            <InventoryWizard submit={(x) => { console.log(x); InventoryService.Add(x).then(x => setLoad(true)) }} coffeeList={coffee}></InventoryWizard>
-        </div>
+        />
     )
 }

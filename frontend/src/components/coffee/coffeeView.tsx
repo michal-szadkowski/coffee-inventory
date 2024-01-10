@@ -3,6 +3,8 @@ import { CoffeeService } from "../../services/coffeeService"
 import CoffeeDTO from "../../services/entities/coffeeDTO"
 import { CoffeeViewElement } from "./coffeeViewElement"
 import CoffeeWizard from "./coffeeWizard"
+import ExpandButton from "../expandButton"
+import Grid from "../grid"
 
 export default function CoffeeView() {
 
@@ -17,27 +19,35 @@ export default function CoffeeView() {
     }, [load])
 
     return (
-        <div>
-            {coffee.map((x, i) =>
-            (<CoffeeViewElement coffee={x} key={i}
-                actions={
-                    <div>
-                        <button onClick={() => setEdited(x)} className="btn btn-info m-1">Edytuj</button>
-                        <button onClick={() => CoffeeService.Delete(x.id).then(() => setLoad(true))} className="btn btn-danger">Usuń</button>
-                    </div>} />
-            ))}
+        <Grid
+            left={
+                <div>
+                    <span className="h5">dodaj nową</span>
+                    <ExpandButton>
+                        <CoffeeWizard
+                            coffee={undefined}
+                            submit={(x) => { CoffeeService.Add(x).then(() => setLoad(true)) }} />
+                    </ExpandButton>
+                    {coffeeEdited !== undefined && (
+                        <>
+                            <h5>edycja</h5>
+                            <CoffeeWizard coffee={coffeeEdited}
+                                submit={(x) => { CoffeeService.Edit(x).then(() => setEdited(undefined)).then(() => setLoad(true)) }}
+                                close={() => setEdited(undefined)} />
+                        </>)}
+                </div>
+            }
+            center={
+                <>
+                    {coffee.map((x, i) => (<CoffeeViewElement coffee={x} key={i}
+                        actions={<div>
+                            <button onClick={() => setEdited(x)} className="btn btn-info m-1">Edytuj</button>
+                            <button onClick={() => CoffeeService.Delete(x.id).then(() => setLoad(true))} className="btn btn-danger">Usuń</button>
+                        </div>} />
+                    ))}
+                </>
+            }
+        />
 
-            {coffeeEdited !== undefined && (
-                <CoffeeWizard coffee={coffeeEdited}
-                    submit={(x) => { CoffeeService.Edit(x).then(() => setEdited(undefined)).then(() => setLoad(true)) }}
-                    close={() => setEdited(undefined)} />)}
-
-            <div className="m-4">
-                <h5>dodaj nową</h5>
-                <CoffeeWizard
-                    coffee={undefined}
-                    submit={(x) => { console.log(x); CoffeeService.Add(x).then(() => setLoad(true)) }} />
-            </div>
-        </div>
     )
 }
