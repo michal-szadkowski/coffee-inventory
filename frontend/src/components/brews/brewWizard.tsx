@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { InventoryItemDTO } from "../../services/entities/inventoryItemDTO";
 import BrewDTO, { UsageDTO } from "../../services/entities/brewDTO";
 import DateTimePicker from "../dateTimePicker";
@@ -6,13 +6,17 @@ import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function BrewWizard({ brew, submit, close, inventory }: { brew?: BrewDTO, submit: (brew: BrewDTO) => void, close?: () => void, inventory: { inv: InventoryItemDTO, coffee: CoffeeDTO | undefined }[] }) {
 
+    const getDefault = useCallback(() => {
+        return brew ?? { time: dateNoSec(new Date()), usage: [] as UsageDTO[] } as BrewDTO
+    }, [brew]);
+
     let [brewEdit, setBrewEdit] = useState<BrewDTO>(getDefault());
 
     let [newRow, setNewRow] = useState<UsageDTO>({ itemId: inventory[0]?.inv.id ?? "", amount: 0 } as UsageDTO);
 
     useEffect(() => {
         setBrewEdit(getDefault())
-    }, [brew, inventory])
+    }, [brew, inventory, getDefault])
 
     function handleChangeArea(e: ChangeEvent<HTMLTextAreaElement>) {
         setBrewEdit({ ...brewEdit, [e?.currentTarget.id]: e.currentTarget.value })
@@ -21,10 +25,6 @@ export default function BrewWizard({ brew, submit, close, inventory }: { brew?: 
         date.setSeconds(0, 0);
         return date;
     }
-
-    function getDefault() {
-        return brew ?? { time: dateNoSec(new Date()), usage: [] as UsageDTO[] } as BrewDTO
-    };
 
     function submitAndClear() {
         submit(brewEdit)

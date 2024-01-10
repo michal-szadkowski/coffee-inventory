@@ -1,14 +1,18 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/inventoryItemDTO";
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function InventoryWizard({ item, submit, close, coffeeList }: { item?: InventoryItemDTO, submit: (arg: InventoryItemDTO) => void, close?: () => void, coffeeList: CoffeeDTO[] }) {
 
+    const getDefault = useCallback(() => {
+        return item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO
+    }, [item]);
+
     let [itemEdit, setItemEdit] = useState<InventoryItemDTO>(getDefault());
 
     useEffect(() => {
         setItemEdit(getDefault())
-    }, [item])
+    }, [item, getDefault])
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setItemEdit({ ...itemEdit, [e?.currentTarget.id]: e.currentTarget.value })
@@ -22,10 +26,6 @@ export default function InventoryWizard({ item, submit, close, coffeeList }: { i
                 itemEdit.coffeeId !== "" && itemEdit.coffeeId !== undefined ? itemEdit.coffeeId : coffeeList.at(0)?.id ?? "" : ""
         });
     }
-
-    function getDefault() {
-        return item ?? { type: InventoryItemTypeDTO.Other, startDate: new Date() } as InventoryItemDTO
-    };
 
     function submitAndClear() {
         submit(itemEdit)
