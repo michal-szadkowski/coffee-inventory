@@ -1,13 +1,17 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import CoffeeDTO from "../../services/entities/coffeeDTO";
 
 export default function CoffeeWizard({ coffee, submit, close }: { coffee?: CoffeeDTO, submit: (arg: CoffeeDTO) => void, close?: () => void }) {
+
+    const getDefault = useCallback(() => {
+        return coffee ?? {} as CoffeeDTO
+    }, [coffee]);
 
     let [coffeeEdit, setCoffeeEdit] = useState<CoffeeDTO>(getDefault());
 
     useEffect(() => {
         setCoffeeEdit(getDefault())
-    }, [coffee])
+    }, [coffee, getDefault])
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setCoffeeEdit({ ...coffeeEdit, [e?.currentTarget.id]: e.currentTarget.value })
@@ -15,10 +19,6 @@ export default function CoffeeWizard({ coffee, submit, close }: { coffee?: Coffe
     function handleChangeArea(e: ChangeEvent<HTMLTextAreaElement>) {
         setCoffeeEdit({ ...coffeeEdit, [e?.currentTarget.id]: e.currentTarget.value })
     }
-
-    function getDefault() {
-        return coffee ?? {} as CoffeeDTO
-    };
 
     function submitAndClear() {
         submit(coffeeEdit)
