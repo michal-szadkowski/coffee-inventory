@@ -1,7 +1,6 @@
-import CoffeeDTO from "../../services/entities/coffeeDTO";
-import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/inventoryItemDTO";
+import {InventoryItemDTO, InventoryItemTypeDTO} from "../../services/entities/inventoryItemDTO";
 
-export function InventoryViewItem({ item, coffee, actions }: { item: InventoryItemDTO, coffee?: CoffeeDTO, actions?: React.ReactNode }) {
+export function InventoryViewItem({item, actions}: { item: InventoryItemDTO, actions?: React.ReactNode }) {
     const labelStyle = "col-6 col-xxl-5 fst-italic fw-lighter"
     const itemStyle = "col-6 col-xxl-7"
     return (
@@ -9,10 +8,6 @@ export function InventoryViewItem({ item, coffee, actions }: { item: InventoryIt
             <div className="card-body card border border-1">
                 <h4 className="card-title">{item.name}</h4>
                 <div className="card-text row g-0 gx-1">
-                    {coffee !== undefined && (
-                        <div className="mb-1">
-                            {coffee?.roaster} {coffee?.origin} - {coffee?.name} 
-                        </div>)}
                     <div className={labelStyle}>Pozostało:</div>
                     <div className={itemStyle}>{item.amount - item.amountUsed} / {item.amount}</div>
                     <div className={labelStyle}>Cena:</div>

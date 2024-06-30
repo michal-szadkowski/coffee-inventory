@@ -1,8 +1,5 @@
-using System.Net;
 using API.Data;
-using API.Services;
 using AutoMapper;
-using DataAccess;
 using DataAccess.Entities;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +10,8 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private IRepository<User> userRepo;
-
-    private IMapper mapper;
+    private readonly IMapper mapper;
+    private readonly IRepository<User> userRepo;
 
     public UserController(IRepository<User> userRepo, IMapper mapper)
     {
@@ -37,7 +33,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult<UserDTO>> Create(UserDTO item)
     {
         var result = await userRepo.Create(mapper.Map<User>(item));
-        return result != null ? mapper.Map<UserDTO>(result) : BadRequest();
+        return mapper.Map<UserDTO>(result);
     }
 
     [HttpDelete]

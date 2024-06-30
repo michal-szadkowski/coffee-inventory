@@ -15,7 +15,7 @@ public class MongoAccess
         if (database == null)
             throw new Exception("Can't access database");
 
-        bool isMongoLive = database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(1000);
+        var isMongoLive = database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(1000);
 
         if (isMongoLive == false)
             throw new Exception("Can't access database");

@@ -1,6 +1,4 @@
-using System.Collections.Immutable;
 using DataAccess.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DataAccess.Repositories;
@@ -8,60 +6,52 @@ namespace DataAccess.Repositories;
 public class BaseRepository<T> : IRepository<T>
     where T : class, IEntity
 {
-    protected IMongoCollection<T> collection;
+    protected readonly IMongoCollection<T> Collection;
 
-    public BaseRepository(MongoAccess mongoAccess, string collectionName)
+    protected BaseRepository(MongoAccess mongoAccess, string collectionName)
     {
         var collection = mongoAccess.Database?.GetCollection<T>(collectionName);
-        if (collection == null)
-            throw new Exception("Collection can't be null");
-        this.collection = collection;
+        Collection = collection ?? throw new Exception("Collection can't be null");
     }
 
     public async Task<T> Create(T item)
     {
         item.Id = string.Empty;
-        await collection.InsertOneAsync(item);
+        await Collection.InsertOneAsync(item);
         return item;
     }
 
     public async Task<T?> Delete(string id)
     {
-        if (ObjectIdValidator.IsValid(id))
-        {
-            var result = await collection.FindOneAndDeleteAsync(x => x.Id == id);
-            return result;
-        }
-        return default;
+        if (!ObjectIdValidator.IsValid(id)) return default;
+        var result = await Collection.FindOneAndDeleteAsync(x => x.Id == id);
+        return result;
     }
 
     public async Task<T?> Get(string id)
     {
-        if (ObjectIdValidator.IsValid(id))
-            return (await collection.FindAsync(x => x.Id == id)).SingleOrDefault();
-        return default;
+        return ObjectIdValidator.IsValid(id)
+            ? (await Collection.FindAsync(x => x.Id == id)).SingleOrDefault()
+            : default;
     }
 
     public async Task<T?> Get(Func<T, bool> expression)
     {
-        return (await collection.FindAsync(x => expression(x))).SingleOrDefault();
+        return (await Collection.FindAsync(x => expression(x))).SingleOrDefault();
     }
 
     public async Task<List<T>> GetAll()
     {
-        return await (await collection.FindAsync(x => true)).ToListAsync();
+        return await (await Collection.FindAsync(x => true)).ToListAsync();
     }
 
     public async Task<T?> Update(T item)
     {
-        if (item == null || !ObjectIdValidator.IsValid(item.Id))
+        if (!ObjectIdValidator.IsValid(item.Id))
             return default;
-        string id = item.Id;
+        var id = item.Id;
         var filter = Builders<T>.Filter.Eq(x => x.Id, id);
-        var result = await collection.ReplaceOneAsync(filter, item);
-        if (result.MatchedCount > 0)
-            return item;
-        else
-            return default;
+        var result = await Collection.ReplaceOneAsync(filter, item);
+        return result.MatchedCount > 0 ? item : default;
     }
 }

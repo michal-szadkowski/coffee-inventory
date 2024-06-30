@@ -1,8 +1,11 @@
-export interface InventoryItemDTO
-{
+export interface InventoryItemDTO {
     id: string,
-    coffeeId: string,
+
     name: string,
+
+    roaster: string,
+    origin: string,
+
     type: InventoryItemTypeDTO,
     startDate: Date,
     endDate?: Date,
@@ -13,8 +16,7 @@ export interface InventoryItemDTO
     price: number
 }
 
-export enum InventoryItemTypeDTO
-{
+export enum InventoryItemTypeDTO {
     Coffee = 0,
     Other = 1
 }
