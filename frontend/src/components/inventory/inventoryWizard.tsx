@@ -69,6 +69,18 @@ export default function InventoryWizard({item, submit, close}: {
                     <label className="form-check-label">Kawa</label>
                 </div>
             </div>
+            {itemEdit.type === InventoryItemTypeDTO.Coffee && (
+                <>
+                    <label className="form-label mt-3">Pochodzenie:</label>
+                    <input className="form-control" type="text" id="origin" value={itemEdit.origin || ""}
+                           onChange={(e) => handleChange(e)}/>
+
+                    <label className="form-label mt-3">Palarnia:</label>
+                    <input className="form-control" type="text" id="roaster" value={itemEdit.roaster || ""}
+                           onChange={(e) => handleChange(e)}/>
+                </>
+
+            )}
 
             <div className="mt-2 me">
                 <button className="btn btn-success me-3" onClick={() => submitAndClear()}>Zapisz</button>

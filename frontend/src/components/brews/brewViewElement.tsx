@@ -1,8 +1,12 @@
 import BrewDTO from "../../services/entities/brewDTO";
-import { InventoryItemDTO } from "../../services/entities/inventoryItemDTO";
+import {InventoryItemDTO} from "../../services/entities/inventoryItemDTO";
 
-export function BrewViewElement({ brew, actions, usedItems }: { brew: BrewDTO, actions?: React.ReactNode, usedItems: InventoryItemDTO[] }) {
-    let usage = brew.usage.map(x => ({ usage: x, item: usedItems.find(y => y.id === x.itemId) }));
+export function BrewViewElement({brew, actions, usedItems}: {
+    brew: BrewDTO,
+    actions?: React.ReactNode,
+    usedItems: InventoryItemDTO[]
+}) {
+    let usage = brew.usage.map(x => ({usage: x, item: usedItems.find(y => y.id === x.itemId)}));
     const labelStyle = "col-3 col-xxl-1 fst-italic fw-lighter"
     const itemStyle = "col-9 col-xxl-2"
     return (
@@ -16,7 +20,8 @@ export function BrewViewElement({ brew, actions, usedItems }: { brew: BrewDTO, a
                     <div className={labelStyle}>Zużycie:</div>
                     <div className={itemStyle}>
                         {usage.map((x, i) => (
-                            <div key={i}>{x.item?.name} <i>{x.usage.amount}</i></div>))}
+                            <div key={i}>{x.item?.origin} {x.item?.roaster} {x.item?.name} <i>{x.usage.amount}</i>
+                            </div>))}
                     </div>
                     <div className={labelStyle}>Komentarz:</div>
                     <div className={itemStyle}>{brew.comment}</div>

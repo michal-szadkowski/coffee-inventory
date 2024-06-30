@@ -46,7 +46,7 @@ export default function BrewWizard({brew, submit, close, inventory}: {
                     return (
                         <div className="w-100 m-0" key={i}>
                             {item?.roaster} {item?.origin} {item?.name}
-                            <i>{x.amount}</i>
+                            <i> {x.amount}</i>
                             <button className="btn" onClick={() => setBrewEdit({
                                 ...brewEdit,
                                 usage: [...brewEdit.usage.slice(0, i), ...brewEdit.usage.slice(i + 1)]
@@ -72,8 +72,6 @@ export default function BrewWizard({brew, submit, close, inventory}: {
                     }}>+
                     </button>
                 </div>
-
-
             </div>
 
             <label className="form-label mt-3">Data parzenia:</label>
