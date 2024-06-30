@@ -59,7 +59,7 @@ export default function BrewWizard({brew, submit, close, inventory}: {
                 <div className="input-group">
                     <select className="form-control w-50" value={newRow.itemId}
                             onChange={(e) => setNewRow({...newRow, itemId: e.target.value})}>
-                        {inventory.map((x, i) => (
+                        {inventory.filter(x => x.endDate == null).map((x, i) => (
                             <option key={i}
                                     value={x.id}>{x.roaster} {x.origin} {x.name}</option>
                         ))}

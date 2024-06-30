@@ -17,7 +17,11 @@ export default function InventoryView() {
 
     useEffect(() => {
         if (load === true) {
-            InventoryService.GetAll().then(x => setInventory(x.data)).then(() => setLoad(false));
+            InventoryService.GetAll()
+                .then(x => setInventory(x.data.sort(
+                    (a, b) => a.endDate == null ? -1 : 1
+                )))
+                .then(() => setLoad(false));
         }
     }, [load])
 
