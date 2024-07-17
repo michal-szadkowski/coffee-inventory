@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import {InventoryItemDTO} from "../../services/entities/inventoryItemDTO";
 import {InventoryService} from "../../services/inventoryService";
-import {InventoryViewItem} from "./inventoryViewItem";
 import InventoryWizard from "./inventoryWizard";
 import ExpandButton from "../expandButton";
 import Grid from "../grid";
+import ItemsList from "./itemsList";
 
 
 export default function InventoryView() {
@@ -49,19 +49,7 @@ export default function InventoryView() {
             }
 
             center={
-                < >
-                    {inventory.map((x, i) =>
-                        (<InventoryViewItem item={x} key={i} actions={
-                                <div>
-                                    <button onClick={() => setEdited(x)} className="btn btn-info m-1">Edytuj
-                                    </button>
-                                    <button onClick={() => InventoryService.Delete(x.id).then(() => setLoad(true))}
-                                            className="btn btn-danger">Usuń
-                                    </button>
-                                </div>}/>
-                        ))}
-                </>
-
+                <ItemsList inventory={inventory} reload={() => setLoad(true)} select={(x) => setEdited(x)}/>
             }
 
         />
