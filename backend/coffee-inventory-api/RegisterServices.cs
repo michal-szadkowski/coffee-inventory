@@ -21,11 +21,8 @@ public static class RegisterServices
 
         collection.AddSingleton<IRepository<InventoryItem>, InventoryItemRepository>();
         collection.AddSingleton<IRepository<Brew>, BrewRepository>();
-        collection.AddSingleton<IRepository<User>, UserRepository>();
-        collection.AddSingleton<IRepository<Payment>, PaymentRepository>();
 
         collection.AddSingleton<InventoryService>();
         collection.AddSingleton<UsageService>();
-        collection.AddSingleton<PaymentService>();
     }
 }
