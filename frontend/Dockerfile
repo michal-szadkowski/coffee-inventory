@@ -1,4 +1,4 @@
-FROM node:21 as build
+FROM node:lts-slim   AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
