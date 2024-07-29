@@ -38,7 +38,7 @@ jobs:
       run: docker build backend --file backend/Dockerfile --tag ${{env.IMAGE_NAME}}-api:latest
 
     - name: Push frontend image
-      run: docker push ${{env.IMAGE_NAME}}-web:latest
+      run: docker push ghcr.io/${{env.IMAGE_NAME}}-web:latest
 
     - name: Push backend image
-      run: docker push ${{env.IMAGE_NAME}}-api:latest
+      run: docker push ghcr.io/${{env.IMAGE_NAME}}-api:latest
