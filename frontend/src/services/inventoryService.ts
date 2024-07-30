@@ -2,7 +2,7 @@ import axios from "axios";
 import { InventoryItemDTO } from "./entities/inventoryItemDTO";
 
 export namespace InventoryService {
-    const ApiBaseUrl: string = process.env.REACT_APP_API_URL != null ? process.env.REACT_APP_API_URL : "";
+    const ApiBaseUrl: string = (window as any)._env_.REACT_APP_API_URL;
 
     export async function GetAll() {
         const { data, status } = await axios.get<InventoryItemDTO[]>(ApiBaseUrl + "/inventory/all");
