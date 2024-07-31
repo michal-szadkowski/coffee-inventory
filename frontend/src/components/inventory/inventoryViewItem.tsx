@@ -1,18 +1,27 @@
-import CoffeeDTO from "../../services/entities/coffeeDTO";
-import { InventoryItemDTO, InventoryItemTypeDTO } from "../../services/entities/inventoryItemDTO";
+import {InventoryItemDTO, InventoryItemTypeDTO} from "../../services/entities/inventoryItemDTO";
 
-export function InventoryViewItem({ item, coffee, actions }: { item: InventoryItemDTO, coffee?: CoffeeDTO, actions?: React.ReactNode }) {
+export function InventoryViewItem({item, actions}: { item: InventoryItemDTO, actions?: React.ReactNode }) {
     const labelStyle = "col-6 col-xxl-5 fst-italic fw-lighter"
     const itemStyle = "col-6 col-xxl-7"
+    let cardStyle = "card-body card border border-1";
+    if (item.endDate != null)
+        cardStyle += " opacity-50";
+
+    let name = item.roaster.length > 0 ? item.roaster + " - " : "";
+    name += item.name;
     return (
         <div className="col-12 col-lg-6 col-xxl-4 my-2 mx-xxl-0">
-            <div className="card-body card border border-1">
-                <h4 className="card-title">{item.name}</h4>
+            <div className={cardStyle}>
+                <h4 className="card-title">{name}</h4>
                 <div className="card-text row g-0 gx-1">
-                    {coffee !== undefined && (
-                        <div className="mb-1">
-                            {coffee?.roaster} {coffee?.origin} - {coffee?.name} 
-                        </div>)}
+
+                    {item.origin.length > 0 &&
+                        <>
+                            <div className={labelStyle}>Pochodzenie:</div>
+                            <div className={itemStyle}>{item.origin}</div>
+                        </>
+                    }
+
                     <div className={labelStyle}>Pozostało:</div>
                     <div className={itemStyle}>{item.amount - item.amountUsed} / {item.amount}</div>
                     <div className={labelStyle}>Cena:</div>

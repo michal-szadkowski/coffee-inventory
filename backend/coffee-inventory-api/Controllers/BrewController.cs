@@ -11,12 +11,12 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class BrewController : ControllerBase
 {
-    private IRepository<Brew> brewRepo;
-    private IMapper mapper;
+    private readonly IRepository<Brew> brewRepo;
+    private readonly IMapper mapper;
 
     public BrewController(IRepository<Brew> repository, IMapper mapper)
     {
-        this.brewRepo = repository;
+        brewRepo = repository;
         this.mapper = mapper;
     }
 
@@ -26,7 +26,7 @@ public class BrewController : ControllerBase
     public async Task<ActionResult<BrewDTO[]>> GetAll()
     {
         var result = await brewRepo.GetAll();
-        return mapper.Map<BrewDTO[]>(result).OrderByDescending(x=>x.Time).ToArray();
+        return mapper.Map<BrewDTO[]>(result).OrderByDescending(x => x.Time).ToArray();
     }
 
     [HttpPost]
@@ -38,6 +38,7 @@ public class BrewController : ControllerBase
             var result = await brewRepo.Create(mapper.Map<Brew>(brew));
             return mapper.Map<BrewDTO>(result);
         }
+
         return BadRequest();
     }
 
@@ -55,11 +56,9 @@ public class BrewController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BrewDTO>> Update(BrewDTO brew)
     {
-        if (brew.Usage.All(x => ObjectIdValidator.IsValid(x.ItemId)))
-        {
-            var result = await brewRepo.Update(mapper.Map<Brew>(brew));
-            return mapper.Map<BrewDTO>(result);
-        }
-        return BadRequest();
+        if (!brew.Usage.All(x => ObjectIdValidator.IsValid(x.ItemId)))
+            return BadRequest();
+        var result = await brewRepo.Update(mapper.Map<Brew>(brew));
+        return mapper.Map<BrewDTO>(result);
     }
 }

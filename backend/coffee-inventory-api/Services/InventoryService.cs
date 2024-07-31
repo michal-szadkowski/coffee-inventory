@@ -1,6 +1,5 @@
 using API.Data;
 using AutoMapper;
-using DataAccess;
 using DataAccess.Entities;
 using DataAccess.Repositories;
 
@@ -8,19 +7,16 @@ namespace API.Services;
 
 public class InventoryService
 {
-    private IRepository<Coffee> coffeeRepo;
-    private IRepository<InventoryItem> inventoryRepo;
-    private UsageService usage;
-    private IMapper mapper;
+    private readonly IRepository<InventoryItem> inventoryRepo;
+    private readonly IMapper mapper;
+    private readonly UsageService usage;
 
     public InventoryService(
-        IRepository<Coffee> coffeeRepo,
         IRepository<InventoryItem> inventoryRepo,
         UsageService usage,
         IMapper mapper
     )
     {
-        this.coffeeRepo = coffeeRepo;
         this.inventoryRepo = inventoryRepo;
         this.usage = usage;
         this.mapper = mapper;
@@ -39,17 +35,11 @@ public class InventoryService
 
     public async Task<InventoryItemDTO?> Create(InventoryItemDTO item)
     {
-        if (
-            item.Type == InventoryItemTypeDTO.Other || (await coffeeRepo.Get(item.CoffeeId)) != null
-        )
-        {
-            item.AmountUsed = 0;
-            var result = await inventoryRepo.Create(mapper.Map<InventoryItem>(item));
-            var dto = mapper.Map<InventoryItemDTO>(result);
+        item.AmountUsed = 0;
+        var result = await inventoryRepo.Create(mapper.Map<InventoryItem>(item));
+        var dto = mapper.Map<InventoryItemDTO>(result);
 
-            return (await FillUsages(new List<InventoryItemDTO>() { dto })).First();
-        }
-        return null;
+        return (await FillUsages(new List<InventoryItemDTO> { dto })).First();
     }
 
     public async Task<InventoryItemDTO?> Delete(string id)
@@ -57,15 +47,15 @@ public class InventoryService
         var result = await inventoryRepo.Delete(id);
         var dto = mapper.Map<InventoryItemDTO>(result);
 
-        return (await FillUsages(new List<InventoryItemDTO>() { dto })).First();
+        return (await FillUsages(new List<InventoryItemDTO> { dto })).First();
     }
 
     public async Task<InventoryItemDTO?> Update(InventoryItemDTO item)
     {
-        ObjectIdValidator.IsValid(item.CoffeeId);
         var result = await inventoryRepo.Update(mapper.Map<InventoryItem>(item));
+        if (result == null) return default;
         var dto = mapper.Map<InventoryItemDTO>(result);
-        return (await FillUsages(new List<InventoryItemDTO>() { dto })).First();
+        return (await FillUsages(new List<InventoryItemDTO> { dto })).First();
     }
 
     public async Task<List<InventoryItemDTO>> FillUsages(List<InventoryItemDTO> items)

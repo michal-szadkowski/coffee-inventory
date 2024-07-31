@@ -1,10 +1,5 @@
-using System.Net;
 using API.Data;
 using API.Services;
-using AutoMapper;
-using DataAccess;
-using DataAccess.Entities;
-using DataAccess.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -13,7 +8,7 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class InventoryController : ControllerBase
 {
-    private InventoryService inventoryService;
+    private readonly InventoryService inventoryService;
 
     public InventoryController(InventoryService inventoryService)
     {
