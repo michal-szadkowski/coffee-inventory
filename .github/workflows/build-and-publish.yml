@@ -25,15 +25,13 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: setup builder
+      run: docker buildx create --name multi-arch --use --bootstrap --platform linux/amd64,linux/arm64
+      
+    - name: build frontend
+      run: docker buildx build --push --tag ${{env.IMAGE_NAME}}-web:latest frontend
 
-    - name: Build frontend
-      run: docker build frontend --file frontend/Dockerfile --tag ${{env.IMAGE_NAME}}-web:latest
-
-    - name: Build backend
-      run: docker build backend --file backend/Dockerfile --tag ${{env.IMAGE_NAME}}-api:latest
-
-    - name: Push frontend image
-      run: docker push ${{env.IMAGE_NAME}}-web:latest
-
-    - name: Push backend image
-      run: docker push ${{env.IMAGE_NAME}}-api:latest
+    - name: build frontend
+      run: docker buildx build --push --tag ${{env.IMAGE_NAME}}-api:latest backend
+      
