@@ -10,8 +10,7 @@ export default function ItemsList({inventory, reload, select}: {
     select: (arg: InventoryItemDTO) => void
 }) {
 
-    let [popup, setPopup] = useState<InventoryItemDTO | null>
-    (null);
+    let [popup, setPopup] = useState<InventoryItemDTO | null>(null);
 
     function AcceptDelete() {
         if (popup != null)
