@@ -10,9 +10,7 @@ import ItemsList from "./itemsList";
 export default function InventoryView() {
 
     let [inventory, setInventory] = useState<InventoryItemDTO[]>([]);
-
     let [itemEdited, setEdited] = useState<InventoryItemDTO | undefined>();
-
     let [load, setLoad] = useState(true);
 
     useEffect(() => {
@@ -44,7 +42,8 @@ export default function InventoryView() {
                                              }}
                                              close={() => setEdited(undefined)}
                             />
-                        </>)}
+                        </>
+                    )}
                 </div>
             }
 
