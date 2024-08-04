@@ -22,7 +22,20 @@ export default function ItemsList({inventory, reload, select}: {
     var itemsOpen = inventory.filter(x => x.endDate == null);
     var itemsClosed = inventory.filter(x => x.endDate != null);
 
-    return < >
+    function GetInventoryViewEl(x: InventoryItemDTO, i: number) {
+        return (
+            <InventoryViewItem item={x} key={i} actions={
+                <div>
+                    <button onClick={() => select(x)} className="btn btn-info m-1">Edytuj</button>
+                    <button onClick={() => setPopup(x)}
+                            className="btn btn-danger">
+                        Usuń
+                    </button>
+                </div>}/>
+        )
+    }
+
+    return <>
         <ConfirmDeletePopup
             isOpen={popup != null}
             onAccept={() => AcceptDelete()}
@@ -31,33 +44,12 @@ export default function ItemsList({inventory, reload, select}: {
             Czy na pewno chcesz usunąć?
         </ConfirmDeletePopup>
 
-        <Grouping text={"Nie puste"} openOnStart={true}>
-            {itemsOpen.map((x, i) =>
-                (<InventoryViewItem item={x} key={i} actions={
-                        <div>
-                            <button onClick={() => select(x)} className="btn btn-info m-1">Edytuj</button>
-                            <button onClick={() => setPopup(x)}
-                                    className="btn btn-danger">
-                                Usuń
-                            </button>
-                        </div>}/>
-                ))}
+        <Grouping text={"Rozpoczęte"} openOnStart={true}>
+            {itemsOpen.map((x, i) => GetInventoryViewEl(x, i))}
         </Grouping>
 
         <Grouping text={"Skończone"} openOnStart={false}>
-            {itemsClosed.map((x, i) =>
-                (<InventoryViewItem item={x} key={i} actions={
-                        <div>
-                            <button onClick={() => select(x)} className="btn btn-info m-1">Edytuj</button>
-                            <button onClick={() => setPopup(x)}
-                                    className="btn btn-danger">
-                                Usuń
-                            </button>
-                        </div>}/>
-                ))}
+            {itemsClosed.map((x, i) => GetInventoryViewEl(x, i))}
         </Grouping>
-
     </>
-
-
 }

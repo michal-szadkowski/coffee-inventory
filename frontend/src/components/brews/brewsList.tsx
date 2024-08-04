@@ -65,7 +65,7 @@ export default function BrewsList({brews, inventory, select, reload}: {
                 {prevWeek.map((x, i) => GetBrewViewEl(x.brew, x.items, i))}
             </Grouping>
 
-            <Grouping text={"Wcześniejsze"} openOnStart={false}>
+            <Grouping text={"Wcześniej"} openOnStart={false}>
                 {earlier.map((x, i) => GetBrewViewEl(x.brew, x.items, i))}
             </Grouping>
         </>
