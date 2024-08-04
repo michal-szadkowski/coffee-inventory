@@ -42,7 +42,8 @@ export default function InventoryView() {
                                              }}
                                              close={() => setEdited(undefined)}
                             />
-                        </>)}
+                        </>
+                    )}
                 </div>
             }
 

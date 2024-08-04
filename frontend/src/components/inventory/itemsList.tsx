@@ -3,6 +3,7 @@ import {useState} from "react";
 import ConfirmDeletePopup from "../popup/confirmDeletePopup";
 import {InventoryService} from "../../services/inventoryService";
 import {InventoryViewItem} from "./inventoryViewItem";
+import Grouping from "../grouping";
 
 export default function ItemsList({inventory, reload, select}: {
     inventory: InventoryItemDTO[],
@@ -18,6 +19,9 @@ export default function ItemsList({inventory, reload, select}: {
         setPopup(null)
     }
 
+    var itemsOpen = inventory.filter(x => x.endDate == null);
+    var itemsClosed = inventory.filter(x => x.endDate != null);
+
     return < >
         <ConfirmDeletePopup
             isOpen={popup != null}
@@ -27,16 +31,32 @@ export default function ItemsList({inventory, reload, select}: {
             Czy na pewno chcesz usunąć?
         </ConfirmDeletePopup>
 
-        {inventory.map((x, i) =>
-            (<InventoryViewItem item={x} key={i} actions={
-                    <div>
-                        <button onClick={() => select(x)} className="btn btn-info m-1">Edytuj</button>
-                        <button onClick={() => setPopup(x)}
-                                className="btn btn-danger">
-                            Usuń
-                        </button>
-                    </div>}/>
-            ))}
+        <Grouping text={"Nie puste"} openOnStart={true}>
+            {itemsOpen.map((x, i) =>
+                (<InventoryViewItem item={x} key={i} actions={
+                        <div>
+                            <button onClick={() => select(x)} className="btn btn-info m-1">Edytuj</button>
+                            <button onClick={() => setPopup(x)}
+                                    className="btn btn-danger">
+                                Usuń
+                            </button>
+                        </div>}/>
+                ))}
+        </Grouping>
+
+        <Grouping text={"Skończone"} openOnStart={false}>
+            {itemsClosed.map((x, i) =>
+                (<InventoryViewItem item={x} key={i} actions={
+                        <div>
+                            <button onClick={() => select(x)} className="btn btn-info m-1">Edytuj</button>
+                            <button onClick={() => setPopup(x)}
+                                    className="btn btn-danger">
+                                Usuń
+                            </button>
+                        </div>}/>
+                ))}
+        </Grouping>
+
     </>
 
 
