@@ -12,9 +12,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [22]
     steps:
     - uses: actions/checkout@v3
 
@@ -22,13 +19,13 @@ jobs:
       uses: pnpm/action-setup@v4
       with:
         version: 9
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 22
         cache: 'pnpm'
 
-    - run: pnpm install --frozen-lockfile
+    - run: pnpm -C frontend install --frozen-lockfile
       working-directory: ./frontend
-    - run: pnpm run build
+    - run: pnpm -C frontend run build
       working-directory: ./frontend
