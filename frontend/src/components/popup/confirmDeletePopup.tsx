@@ -8,7 +8,7 @@ export default function ConfirmDeletePopup({children, isOpen, onAccept, onClose}
 }) {
 
     if (isOpen)
-        return <div className="popup" onClick={(e) => {
+        return <div className="popup" onClick={() => {
             onClose()
         }}>
             <div className="popup-inner d-flex flex-column col-lg-4 col-11" onClick={(e) => {

@@ -17,7 +17,7 @@ export default function InventoryView() {
         if (load === true) {
             InventoryService.GetAll()
                 .then(x => setInventory(x.data.sort(
-                    (a, b) => a.endDate == null ? -1 : 1
+                    (a, _) => a.endDate == null ? -1 : 1
                 )))
                 .then(() => setLoad(false));
         }
@@ -30,7 +30,7 @@ export default function InventoryView() {
                     <span className="h5">dodaj nowy</span>
                     <ExpandButton>
                         <InventoryWizard submit={(x) => {
-                            InventoryService.Add(x).then(x => setLoad(true))
+                            InventoryService.Add(x).then(() => setLoad(true))
                         }}></InventoryWizard>
                     </ExpandButton>
                     {itemEdited !== undefined && (
