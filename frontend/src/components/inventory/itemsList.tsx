@@ -15,7 +15,7 @@ export default function ItemsList({inventory, reload, select}: {
 
     function AcceptDelete() {
         if (popup != null)
-            InventoryService.Delete(popup.id).then(x => reload());
+            InventoryService.Delete(popup.id).then(() => reload());
         setPopup(null)
     }
 
