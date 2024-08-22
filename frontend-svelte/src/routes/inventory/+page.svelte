@@ -1,10 +1,10 @@
 <script lang="ts">
-    import InvItem from "./InvItem.svelte";
     import type {InventoryItemDTO} from "$lib/services/entities/inventoryItemDTO";
     import {Drawer} from "$lib/components/ui/drawer";
     import {DrawerContent} from "$lib/components/ui/drawer/index.js";
     import InvItemWizard from "./InvItemWizard.svelte";
     import {Button} from "$lib/components/ui/button";
+    import InvItemCard from "./InvItemCard.svelte";
 
     export let data;
 
@@ -37,11 +37,11 @@
 
 <div class="w-full 2xl:w-2/3 lg:w-4/5 grid grid-cols-1 xl:grid-cols-4 md:grid-cols-3 m-auto mt-4 gap-2">
     {#each open as item (item.id)}
-        <InvItem {item} on:click={()=>selectEl(item)}/>
+        <InvItemCard {item} on:click={()=>selectEl(item)}/>
     {/each}
 
     {#each closed as item (item.id)}
-        <InvItem {item} on:click={()=>selectEl(item)}/>
+        <InvItemCard {item} on:click={()=>selectEl(item)}/>
     {/each}
 </div>
 
