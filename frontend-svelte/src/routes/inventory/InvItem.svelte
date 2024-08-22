@@ -24,17 +24,17 @@
         <div class="italic">Pozostało:</div>
         <div>{(item.amount - item.amountUsed).toLocaleString()} / {item.amount}</div>
 
-        <div class="italic">Rozpoczęto</div>
+        <div class="italic">Rozpoczęto:</div>
         <div>{item.startDate.toISOString().slice(0, 10)}</div>
 
         {#if item.endDate !== undefined}
-            <div class="italic">Zakończono</div>
+            <div class="italic">Zakończono:</div>
             <div>{item.endDate.toISOString().slice(0, 10)}</div>
         {/if}
 
+        <div class="italic">Cena:</div>
+        <div>{item.price} zł</div>
+
 
     </CardContent>
-    <!--    <CardFooter class="justify-self-end ms-auto mt-auto p-3 xl:p-6">-->
-    <!--        <Button on:click={()=>console.log("ASD")}>Edytuj</Button>-->
-    <!--    </CardFooter>-->
 </Card>

@@ -51,7 +51,8 @@
         await invalidateAll();
     }
 </script>
-<div class="p-8 overflow-auto h-full flex flex-col">
+
+<div class="p-4 2xl:p-8 overflow-auto h-full flex flex-col">
     {#if item === undefined}
         <div>Nowy</div>
     {:else}
@@ -118,7 +119,7 @@
         </div>
     {/if}
 
-    <div class="justify-self-end mt-auto mb-5 w-full flex justify-around">
+    <div class="justify-self-end mt-auto pt-6 mb-5 2xl:mb-0 w-full flex justify-around">
         {#if item !== undefined}
             <Button class="bg-destructive my-auto" on:click={()=>Delete()}>Usuń</Button>
         {/if}
