@@ -39,9 +39,8 @@
             await InventoryService.Add(result);
         else
             await InventoryService.Edit(result);
-        await invalidateAll();
         close();
-
+        await invalidateAll();
     }
 
     async function Delete() {
@@ -51,7 +50,6 @@
         await invalidateAll();
     }
 </script>
-
 <div class="p-4 2xl:p-8 overflow-auto h-full flex flex-col">
     {#if item === undefined}
         <div>Nowy</div>

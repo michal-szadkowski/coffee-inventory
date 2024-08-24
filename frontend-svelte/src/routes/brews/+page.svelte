@@ -3,6 +3,7 @@
     import BrewCard from "./BrewCard.svelte";
     import {Drawer, DrawerContent} from "$lib/components/ui/drawer";
     import type {BrewDTO} from "$lib/services/entities/brewDTO";
+    import BrewWizard from "./BrewWizard.svelte";
 
     export let data;
     let drawer: boolean;
@@ -33,5 +34,6 @@
 
 <Drawer direction="left" bind:open={drawer}>
     <DrawerContent class="left-0 top-0 bottom-0 w-11/12 sm:w-2/3 lg:w-1/3 2xl:w-1/4 h-full xl:h-4/5 my-auto">
+        <BrewWizard brew={edited} items={data.items} close={()=>{drawer=false;}}/>
     </DrawerContent>
 </Drawer>

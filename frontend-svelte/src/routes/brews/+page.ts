@@ -1,7 +1,6 @@
 import {BrewService} from "$lib/services/brewsService";
 import {InventoryService} from "$lib/services/inventoryService";
-import type {BrewDTO} from "$lib/services/entities/brewDTO";
-import {type InventoryItemDTO, InventoryItemTypeDTO} from "$lib/services/entities/inventoryItemDTO";
+import {extendBrewsWithInventoryItems} from "$lib/services/brewsExtender";
 
 export async function load({fetch}) {
     const brews = await BrewService.GetAll();
@@ -9,18 +8,7 @@ export async function load({fetch}) {
     const brewsWithItems = brews.data.map(x =>
         extendBrewsWithInventoryItems(x, items.data));
     return {
-        brews: brewsWithItems
+        brews: brewsWithItems,
+        items: items.data
     }
-}
-
-
-function extendBrewsWithInventoryItems(brew: BrewDTO, allItems: InventoryItemDTO[]) {
-    const brewUsage = brew.usage.map(x => {
-        return {
-            item: allItems.filter(y => y.id == x.itemId)[0],
-            amount: x.amount
-        }
-    })
-    brewUsage.sort(a => a.item.type === InventoryItemTypeDTO.Coffee ? 0 : 1)
-    return {...brew, usageItems: brewUsage}
 }

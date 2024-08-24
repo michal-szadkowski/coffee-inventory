@@ -3,7 +3,7 @@ import type {InventoryItemDTO} from "$lib/services/entities/inventoryItemDTO";
 
 
 export module InventoryService {
-    const ApiBaseUrl: string = "http://localhost:5001";
+    const ApiBaseUrl: string = "http://192.168.0.71:5001";
 
     export async function GetAll() {
         const {data, status} = await axios.get<InventoryItemDTO[]>(ApiBaseUrl + "/inventory/all");

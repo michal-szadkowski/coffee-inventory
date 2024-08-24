@@ -3,7 +3,7 @@ import axios from "axios";
 import type {BrewDTO} from "$lib/services/entities/brewDTO";
 
 export namespace BrewService {
-    const ApiBaseUrl: string = "http://localhost:5001";
+    const ApiBaseUrl: string = "http://192.168.0.71:5001";
 
     export async function GetAll() {
         const {data, status} = await axios.get<BrewDTO[]>(ApiBaseUrl + "/brew/all");

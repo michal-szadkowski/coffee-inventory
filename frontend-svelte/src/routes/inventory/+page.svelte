@@ -45,12 +45,9 @@
     {/each}
 </div>
 
-<Drawer direction="left" bind:open={drawer}>
+<Drawer direction="left" bind:open={drawer} >
     <DrawerContent class="left-0 top-0 bottom-0 w-11/12 sm:w-2/3 lg:w-1/3 2xl:w-1/4 h-full xl:h-4/5 my-auto">
-
-        <InvItemWizard item={edited} close={()=>drawer=false}>
-
-        </InvItemWizard>
+        <InvItemWizard item={edited} close={()=>drawer=false}/>
     </DrawerContent>
 </Drawer>
     
