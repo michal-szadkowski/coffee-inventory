@@ -10,7 +10,7 @@
     </a>
     <div class="grow"></div>
     <a class="mr-5 self-center text-xl" href="/inventory">Inwentarz</a>
-    <a class="mr-5 self-center text-xl" href="/inventory">Parzenia</a>
+    <a class="mr-5 self-center text-xl" href="/brews">Parzenia</a>
 </div>
 
 <slot></slot>
