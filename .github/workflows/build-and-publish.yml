@@ -40,7 +40,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         context: frontend-svelte
-        file: Dockerfile
+        file: frontend-svelte/Dockerfile
         platforms: linux/amd64,linux/arm64,linux/arm64/v8
         push: true
         tags: ${{env.IMAGE_NAME}}-web-sv:latest
@@ -51,7 +51,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         context: backend
-        file: Dockerfile
+        file: backend/Dockerfile
         platforms: linux/amd64,linux/arm64,linux/arm64/v8
         push: true
         tags: ${{env.IMAGE_NAME}}-api:latest
