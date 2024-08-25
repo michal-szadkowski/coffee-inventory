@@ -2,7 +2,7 @@ name: Build images
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main","ci" ]
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
@@ -29,15 +29,31 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         
-    - name: setup builder
-      run: docker buildx create --name multi-arch --use --bootstrap --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v8
-      
-    - name: build frontend
-      run: docker buildx build --push --tag ${{env.IMAGE_NAME}}-web:latest frontend
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v2
 
-    - name: build frontend-svelte
-      run: docker buildx build --push --tag ${{env.IMAGE_NAME}}-web-sv:latest frontend-svelte
-
-    - name: build backend
-      run: docker buildx build --push --tag ${{env.IMAGE_NAME}}-api:latest backend
+    - name: Available platforms
+      run: echo ${{ steps.buildx.outputs.platforms }}
       
+    - name: Build and push frontend
+      uses: docker/build-push-action@v6
+      with:
+        context: frontend-svelte
+        file: Dockerfile
+        platforms: linux/amd64,linux/arm64,linux/arm64/v8
+        push: true
+        tags: ${{env.IMAGE_NAME}}-web-sv:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Build and push backend
+      uses: docker/build-push-action@v6
+      with:
+        context: backend
+        file: Dockerfile
+        platforms: linux/amd64,linux/arm64,linux/arm64/v8
+        push: true
+        tags: ${{env.IMAGE_NAME}}-api:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max     
