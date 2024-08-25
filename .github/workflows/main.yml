@@ -1,0 +1,26 @@
+name: build frontend-svelte
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    
+defaults:
+ run:
+  working-directory: frontend-svelte
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'pnpm'
+        cache-dependency-path: frontend/pnpm-lock.yaml
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm run build
