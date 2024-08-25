@@ -2,7 +2,7 @@ name: Build images
 
 on:
   push:
-    branches: [ "main","ci" ]
+    branches: [ "main" ]
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
