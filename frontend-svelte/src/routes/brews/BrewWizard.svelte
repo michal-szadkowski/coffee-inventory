@@ -12,6 +12,7 @@
     import {Button} from "$lib/components/ui/button";
     import {invalidateAll} from "$app/navigation";
     import {BrewService} from "$lib/services/brewsService";
+    import formatItemName from "$lib/itemNameFormatter";
 
     export let brew: BrewDTO | undefined;
     export let items: InventoryItemDTO[];
@@ -35,21 +36,22 @@
     $:usageItems = extendBrewsWithInventoryItems(result, items).usageItems
 
     let newItemId: { value: string, label: string } = {value: "", label: ""};
-    let newItemCount: number = 0;
+    let newItemCount: number | undefined = undefined;
 
     function remove(itemId: string) {
         usage = usage.filter(x => x.itemId !== itemId);
     }
 
     function addNew() {
+        if (newItemCount === undefined) return;
         if (newItemId.value !== "" && newItemCount > 0) {
             usage = [...usage, {itemId: newItemId.value, amount: parseFloat(newItemCount.toString())}]
             newItemId = {value: "", label: ""};
-            newItemCount = 0;
+            newItemCount = undefined;
         }
     }
 
-    async function Save() {
+    async function saveBrew() {
         if (brew === undefined)
             await BrewService.Add(result);
         else
@@ -58,7 +60,7 @@
         close();
     }
 
-    async function Delete() {
+    async function deleteBrew() {
         if (brew !== undefined)
             await BrewService.Delete(result.id);
         close();
@@ -67,11 +69,11 @@
 
 </script>
 
-<div class="p-4 2xl:p-8 overflow-auto h-full flex flex-col">
+<div class="p-2 2xl:p-8 overflow-auto h-full flex flex-col">
     {#if brew === undefined}
         <div>Nowy</div>
     {:else}
-        <div>Edycja</div>
+        <div class="text-2xl font-bold">Edycja</div>
     {/if}
 
     <div class="mt-3" data-vaul-no-drag>
@@ -84,12 +86,11 @@
                     </SelectTrigger>
                     <SelectContent>
                         {#each openItems as item}
-                            <SelectItem class="px-1" value={item.id}>{item.name} {item.origin} {item.roaster}</SelectItem>
+                            <SelectItem class="px-1" value={item.id}>{formatItemName(item)}</SelectItem>
                         {/each}
                     </SelectContent>
                 </Select>
-
-                <Input class="w-1/2" type="number" bind:value={newItemCount}></Input>
+                <Input class="w-1/2" type="number" placeholder="ilość" bind:value={newItemCount} autocomplete="off"></Input>
                 <Button class="w-2/5 justify-self-end ml-auto mr-0" on:click={()=>addNew()}>
                     <LucidePlus size="22"/>
                 </Button>
@@ -103,14 +104,14 @@
         <Table class="xl:text-base">
             {#each usageItems as usage}
                 <TableRow class="border-y border-muted-foreground">
-                    <TableCell class="py-1 w-5/6 text-sm">{usage.item.name}</TableCell>
+                    <TableCell class="py-1 w-5/6 text-sm">{formatItemName(usage.item)}</TableCell>
                     <TableCell class="py-1 text-right min-w-fit text-nowrap text-sm">
                         {usage.amount}
-                        {#if usage.item.type === InventoryItemTypeDTO.Coffee}g{/if}
+                        {#if usage.item?.type === InventoryItemTypeDTO.Coffee}g{/if}
                     </TableCell>
                     <TableCell class="py-1">
-                        <button on:click={()=>remove(usage.item.id)}>
-                            <LucideDelete size="20"/>
+                        <button class="flex" on:click={()=>{if(usage.item !==undefined){remove(usage.item?.id)}}}>
+                            <LucideDelete size="20" class="self-center"/>
                         </button>
                     </TableCell>
                 </TableRow>
@@ -128,15 +129,15 @@
     <div class="mt-3" data-vaul-no-drag>
         <Label for="time">
             Komentarz:
-            <Textarea class="resize-none" bind:value={comment}/>
+            <Textarea class="resize-none" bind:value={comment} autocomplete="false"/>
         </Label>
     </div>
 
     <div class="justify-self-end mt-auto pt-6 mb-5 2xl:mb-0 w-full flex justify-around">
         {#if brew !== undefined}
-            <Button class="bg-destructive my-auto" on:click={()=>Delete()}>Usuń</Button>
+            <Button class="bg-destructive my-auto" on:click={()=>deleteBrew()}>Usuń</Button>
         {/if}
-        <Button on:click={()=>Save()}>
+        <Button on:click={()=>saveBrew()}>
             Zapisz
         </Button>
 

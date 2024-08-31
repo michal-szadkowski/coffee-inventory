@@ -34,7 +34,7 @@
         price: itPrice
     }
 
-    async function Save() {
+    async function saveItem() {
         if (item === undefined)
             await InventoryService.Add(result);
         else
@@ -43,24 +43,24 @@
         await invalidateAll();
     }
 
-    async function Delete() {
+    async function deleteItem() {
         if (item !== undefined)
             await InventoryService.Delete(result.id);
         close();
         await invalidateAll();
     }
 </script>
-<div class="p-4 2xl:p-8 overflow-auto h-full flex flex-col">
+<div class="p-2 2xl:p-8 overflow-auto h-full flex flex-col">
     {#if item === undefined}
         <div>Nowy</div>
     {:else}
-        <div>Edycja</div>
+        <div class="text-2xl font-bold">Edycja</div>
     {/if}
 
     <div class="mt-3">
         <Label for="itname">
             Nazwa:
-            <Input id="itname" type="text" placeholder="nazwa" bind:value={itName}/>
+            <Input id="itname" type="text" placeholder="nazwa" bind:value={itName} autocomplete="off"/>
         </Label>
     </div>
 
@@ -68,7 +68,7 @@
         <Label for="itstartdate">
             Rozpoczęcie:
             <Input id="itstartdate" type="date" value={itStartDate?.toISOString?.().split("T")[0]}
-                   on:change={(e)=>{itStartDate = e.currentTarget.valueAsDate ?? new Date()}}/>
+                   on:change={(e)=>{itStartDate = e.currentTarget.valueAsDate ?? new Date()}} autocomplete="off"/>
         </Label>
     </div>
 
@@ -76,21 +76,21 @@
         <Label for="itenddate">
             Zakończenie:
             <Input id="itenddate" type="date" value={itEndDate?.toISOString?.().split("T")[0]}
-                   on:change={(e)=>{itEndDate = e.currentTarget.valueAsDate??undefined}}/>
+                   on:change={(e)=>{itEndDate = e.currentTarget.valueAsDate??undefined}} autocomplete="off"/>
         </Label>
     </div>
 
     <div class="mt-3">
         <Label for="itamount">
             Ilość:
-            <Input id="itamount" type="number" placeholder="ilość" bind:value={itAmount}/>
+            <Input id="itamount" type="number" placeholder="ilość" bind:value={itAmount} autocomplete="off"/>
         </Label>
     </div>
 
     <div class="mt-3">
         <Label for="itprice">
             Cena:
-            <Input id="itprice" type="number" placeholder="cena" bind:value={itPrice}/>
+            <Input id="itprice" type="number" placeholder="cena" bind:value={itPrice} autocomplete="off"/>
         </Label>
     </div>
 
@@ -105,23 +105,23 @@
         <div class="mt-3">
             <Label for="itroaster">
                 Palarnia:
-                <Input id="itroaster" type="text" placeholder="palarnia" bind:value={itRoaster}/>
+                <Input id="itroaster" type="text" placeholder="palarnia" bind:value={itRoaster} autocomplete="off"/>
             </Label>
         </div>
 
         <div class="mt-3">
             <Label for="itorigin">
                 Pochodzenie:
-                <Input id="itorigin" type="text" placeholder="pochodzenie" bind:value={itOrigin}/>
+                <Input id="itorigin" type="text" placeholder="pochodzenie" bind:value={itOrigin} autocomplete="off"/>
             </Label>
         </div>
     {/if}
 
     <div class="justify-self-end mt-auto pt-6 mb-5 2xl:mb-0 w-full flex justify-around">
         {#if item !== undefined}
-            <Button class="bg-destructive my-auto" on:click={()=>Delete()}>Usuń</Button>
+            <Button class="bg-destructive my-auto" on:click={()=>deleteItem()}>Usuń</Button>
         {/if}
-        <Button on:click={()=>Save()}>
+        <Button on:click={()=>saveItem()}>
             Zapisz
         </Button>
 

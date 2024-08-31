@@ -15,5 +15,5 @@ export interface UsageDTO {
 }
 
 export interface BrewWithItems extends BrewDTO {
-    usageItems: { item: InventoryItemDTO, amount: number }[],
+    usageItems: { item: InventoryItemDTO | undefined, amount: number }[],
 }
