@@ -12,7 +12,7 @@
     let closed: InventoryItemDTO[];
 
     $: open = data.items.filter(x => x.endDate === undefined).sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
-    $: closed = data.items.filter(x => x.endDate !== undefined);
+    $: closed = data.items.filter(x => x.endDate !== undefined).sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
 
     let edited: InventoryItemDTO | undefined = undefined;
     let drawer: boolean = false;
