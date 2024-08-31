@@ -6,6 +6,7 @@
     import {InventoryItemTypeDTO} from "$lib/services/entities/inventoryItemDTO";
     import {Table, TableCell, TableRow} from "$lib/components/ui/table";
     import {LucideEllipsis} from "lucide-svelte";
+    import formatItemName from "$lib/itemNameFormatter";
 
     export let select: () => void;
     export let brew: BrewWithItems;
@@ -25,10 +26,12 @@
         <Table class="xl:text-base">
             {#each brew.usageItems as usage}
                 <TableRow class="border-y border-muted-foreground">
-                    <TableCell class="py-1 w-5/6">{usage.item.name}</TableCell>
+                    <TableCell class="py-1 w-5/6">
+                        { formatItemName(usage.item)}
+                    </TableCell>
                     <TableCell class="py-1 text-right min-w-fit text-nowrap">
                         {usage.amount}
-                        {#if usage.item.type === InventoryItemTypeDTO.Coffee}g{/if}
+                        {#if usage.item?.type === InventoryItemTypeDTO.Coffee}g{/if}
                     </TableCell>
                 </TableRow>
             {/each}

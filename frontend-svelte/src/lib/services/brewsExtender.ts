@@ -4,10 +4,10 @@ import {type InventoryItemDTO, InventoryItemTypeDTO} from "$lib/services/entitie
 export function extendBrewsWithInventoryItems(brew: BrewDTO, allItems: InventoryItemDTO[]) {
     const brewUsage = brew.usage.map(x => {
         return {
-            item: allItems.filter(y => y.id == x.itemId)[0],
+            item: allItems.filter(y => y.id == x.itemId).at(0),
             amount: x.amount
         }
     })
-    brewUsage.sort(a => a.item.type === InventoryItemTypeDTO.Coffee ? 0 : 1)
+    brewUsage.sort(a => a.item?.type === InventoryItemTypeDTO.Coffee ? 0 : 1)
     return {...brew, usageItems: brewUsage}
 }

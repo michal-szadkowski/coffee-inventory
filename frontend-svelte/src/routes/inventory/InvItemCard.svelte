@@ -1,17 +1,22 @@
 <script lang="ts">
     import type {InventoryItemDTO} from "$lib/services/entities/inventoryItemDTO.js";
     import {Card, CardContent, CardHeader, CardTitle} from "$lib/components/ui/card/index.js";
+    import {LucideEllipsis} from "lucide-svelte";
 
     export let item: InventoryItemDTO;
+    export let select: () => void;
 </script>
 
-<Card class={"flex flex-col m-1" + (item.endDate !== undefined? " opacity-75":"")} on:click>
+<Card class={"flex flex-col m-1 overflow-hidden" + (item.endDate !== undefined? " opacity-75":"")}>
     <CardHeader class="p-3 xl:p-6">
-        <CardTitle>
+        <CardTitle class="flex">
             {item.name}
+            <button on:click={select} class="ms-auto">
+                <LucideEllipsis/>
+            </button>
         </CardTitle>
     </CardHeader>
-    <CardContent class="grid grid-cols-2 p-3 xl:p-6 pt-0">
+    <CardContent class="grid grid-cols-2 p-3 xl:p-6 xl:pt-0">
         {#if item.origin !== ''}
             <div class="italic">Pochodzenie:</div>
             <div>{item.origin}</div>
