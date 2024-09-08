@@ -71,7 +71,7 @@
 
 <div class="p-2 2xl:p-8 overflow-auto h-full flex flex-col">
     {#if brew === undefined}
-        <div>Nowy</div>
+        <div class="text-2xl font-bold">Nowy</div>
     {:else}
         <div class="text-2xl font-bold">Edycja</div>
     {/if}
