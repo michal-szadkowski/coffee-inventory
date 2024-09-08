@@ -117,6 +117,7 @@
                                    bind:value={editedAmount}
                                    use:focusInline
                                    on:keydown={keydownInline}
+                                   on:blur={stopEdit}
                             />
 
                         {:else}
