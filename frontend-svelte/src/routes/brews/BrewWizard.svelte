@@ -1,18 +1,13 @@
 <script lang="ts">
     import type {BrewDTO, UsageDTO} from "$lib/services/entities/brewDTO";
-    import {type InventoryItemDTO, InventoryItemTypeDTO} from "$lib/services/entities/inventoryItemDTO";
+    import {type InventoryItemDTO} from "$lib/services/entities/inventoryItemDTO";
     import {Label} from "$lib/components/ui/label";
     import DateTimePicker from "$lib/components/DateTimePicker.svelte";
-    import {Table, TableCell, TableRow} from "$lib/components/ui/table";
-    import {extendBrewsWithInventoryItems} from "$lib/services/brewsExtender";
-    import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "$lib/components/ui/select";
-    import {Input} from "$lib/components/ui/input";
-    import {LucideDelete, LucidePlus} from "lucide-svelte";
     import {Textarea} from "$lib/components/ui/textarea";
     import {Button} from "$lib/components/ui/button";
     import {invalidateAll} from "$app/navigation";
     import {BrewService} from "$lib/services/brewsService";
-    import formatItemName from "$lib/itemNameFormatter";
+    import UsageWizard from "./UsageWizard.svelte";
 
     export let brew: BrewDTO | undefined;
     export let items: InventoryItemDTO[];
@@ -20,7 +15,7 @@
 
     let openItems = items.filter(x => x.endDate === undefined);
 
-    let usage: UsageDTO[] = brew?.usage ?? [];
+    let usage: UsageDTO[] = brew?.usage ?? [];  
     let comment: string = brew?.comment ?? "";
     let time: Date = brew?.time ?? new Date(Date.now());
 
@@ -31,24 +26,6 @@
         time: time,
         coffeeOut: 0,
         timeInSeconds: 0
-    }
-
-    $:usageItems = extendBrewsWithInventoryItems(result, items).usageItems
-
-    let newItemId: { value: string, label: string } = {value: "", label: ""};
-    let newItemCount: number | undefined = undefined;
-
-    function remove(itemId: string) {
-        usage = usage.filter(x => x.itemId !== itemId);
-    }
-
-    function addNew() {
-        if (newItemCount === undefined) return;
-        if (newItemId.value !== "" && newItemCount > 0) {
-            usage = [...usage, {itemId: newItemId.value, amount: parseFloat(newItemCount.toString())}]
-            newItemId = {value: "", label: ""};
-            newItemCount = undefined;
-        }
     }
 
     async function saveBrew() {
@@ -66,7 +43,6 @@
         close();
         await invalidateAll();
     }
-
 </script>
 
 <div class="p-2 2xl:p-8 overflow-auto h-full flex flex-col">
@@ -76,48 +52,7 @@
         <div class="text-2xl font-bold">Edycja</div>
     {/if}
 
-    <div class="mt-3" data-vaul-no-drag>
-        <Label for="time">
-            Dodaj nowy:
-            <div class="flex flex-wrap gap-y-3">
-                <Select bind:selected={newItemId}>
-                    <SelectTrigger class="w-full">
-                        <SelectValue class="text-sm text-left"></SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                        {#each openItems as item}
-                            <SelectItem class="px-1" value={item.id}>{formatItemName(item)}</SelectItem>
-                        {/each}
-                    </SelectContent>
-                </Select>
-                <Input class="w-1/2" type="number" placeholder="ilość" bind:value={newItemCount} autocomplete="off"></Input>
-                <Button class="w-2/5 justify-self-end ml-auto mr-0" on:click={()=>addNew()}>
-                    <LucidePlus size="22"/>
-                </Button>
-            </div>
-
-        </Label>
-    </div>
-
-
-    <div class="my-3 min-h-28">
-        <Table class="xl:text-base">
-            {#each usageItems as usage}
-                <TableRow class="border-y border-muted-foreground">
-                    <TableCell class="py-1 w-5/6 text-sm">{formatItemName(usage.item)}</TableCell>
-                    <TableCell class="py-1 text-right min-w-fit text-nowrap text-sm">
-                        {usage.amount}
-                        {#if usage.item?.type === InventoryItemTypeDTO.Coffee}g{/if}
-                    </TableCell>
-                    <TableCell class="py-1">
-                        <button class="flex" on:click={()=>{if(usage.item !==undefined){remove(usage.item?.id)}}}>
-                            <LucideDelete size="20" class="self-center"/>
-                        </button>
-                    </TableCell>
-                </TableRow>
-            {/each}
-        </Table>
-    </div>
+    <UsageWizard items={openItems} bind:usage={usage}></UsageWizard>
 
     <div class="mt-3">
         <Label for="time">
