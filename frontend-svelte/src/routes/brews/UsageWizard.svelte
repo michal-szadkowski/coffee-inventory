@@ -110,10 +110,10 @@
         {#each usageItems as usage}
             <TableRow class="border-y border-muted-foreground text-sm">
                 <TableCell class="py-1 w-4/6">{formatItemName(usage.item)}</TableCell>
-                <TableCell class="py-1 text-nowrap w-2/6">
+                <TableCell class="py-1 text-nowrap w-2/6 px-0">
                     <div class="text-right flex justify-items-end   ">
                         {#if editedId !== undefined && usage.item?.id === editedId}
-                            <input dir="rtl" class="ml-4 bg-background outline-none text-right w-full" type="number"
+                            <input dir="rtl" class="p-0 2xl:ml-4 bg-background outline-none text-right w-full" type="number"
                                    bind:value={editedAmount}
                                    use:focusInline
                                    on:keydown={keydownInline}
