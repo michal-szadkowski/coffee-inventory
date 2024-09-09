@@ -60,7 +60,7 @@
     <div class="mt-3">
         <Label for="itname">
             Nazwa:
-            <Input id="itname" type="text" placeholder="nazwa" bind:value={itName} autocomplete="off"/>
+            <Input id="itname" type="text" placeholder="nazwa" bind:value={itName} autocomplete="off" data-vaul-no-drag/>
         </Label>
     </div>
 
@@ -83,14 +83,14 @@
     <div class="mt-3">
         <Label for="itamount">
             Ilość:
-            <Input id="itamount" type="number" placeholder="ilość" bind:value={itAmount} autocomplete="off"/>
+            <Input id="itamount" type="number" placeholder="ilość" bind:value={itAmount} autocomplete="off" data-vaul-no-drag/>
         </Label>
     </div>
 
     <div class="mt-3">
         <Label for="itprice">
             Cena:
-            <Input id="itprice" type="number" placeholder="cena" bind:value={itPrice} autocomplete="off"/>
+            <Input id="itprice" type="number" placeholder="cena" bind:value={itPrice} autocomplete="off" data-vaul-no-drag/>
         </Label>
     </div>
 
@@ -105,14 +105,14 @@
         <div class="mt-3">
             <Label for="itroaster">
                 Palarnia:
-                <Input id="itroaster" type="text" placeholder="palarnia" bind:value={itRoaster} autocomplete="off"/>
+                <Input id="itroaster" type="text" placeholder="palarnia" bind:value={itRoaster} autocomplete="off" data-vaul-no-drag/>
             </Label>
         </div>
 
         <div class="mt-3">
             <Label for="itorigin">
                 Pochodzenie:
-                <Input id="itorigin" type="text" placeholder="pochodzenie" bind:value={itOrigin} autocomplete="off"/>
+                <Input id="itorigin" type="text" placeholder="pochodzenie" bind:value={itOrigin} autocomplete="off" data-vaul-no-drag/>
             </Label>
         </div>
     {/if}
