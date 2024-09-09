@@ -14,7 +14,9 @@
     export let usage: UsageDTO[] = [];
     export let items: InventoryItemDTO[];
 
-    $:usageItems = extendUsageWithInventoryItems(usage, items);
+    $: openItems = items.filter(x => x.endDate === undefined);
+
+    $:usageWithItems = extendUsageWithInventoryItems(usage, items);
 
     function addDefaultUsage() {
         let others = items.filter(x => x.type === InventoryItemTypeDTO.Other);
@@ -89,7 +91,7 @@
                     <SelectValue class="text-sm text-left"></SelectValue>
                 </SelectTrigger>
                 <SelectContent>
-                    {#each items as item}
+                    {#each openItems as item}
                         <SelectItem class="px-1" value={item.id}>{formatItemName(item)}</SelectItem>
                     {/each}
                 </SelectContent>
@@ -107,7 +109,7 @@
 <div class="my-3 min-h-28">
     <Table class="xl:text-base">
 
-        {#each usageItems as usage}
+        {#each usageWithItems as usage}
             <TableRow class="border-y border-muted-foreground text-sm">
                 <TableCell class="py-1 w-4/6">{formatItemName(usage.item)}</TableCell>
                 <TableCell class="py-1 text-nowrap w-2/6 px-0">
@@ -121,7 +123,7 @@
                             />
 
                         {:else}
-                            <span class="mx-auto w-full" on:click={()=>edit(usage.item?.id)}>
+                            <span class="mx-auto w-full cursor-pointer" on:click={()=>edit(usage.item?.id)}>
                                 {usage.amount}
                             </span>
                         {/if}

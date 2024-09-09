@@ -13,9 +13,7 @@
     export let items: InventoryItemDTO[];
     export let close: () => void;
 
-    let openItems = items.filter(x => x.endDate === undefined);
-
-    let usage: UsageDTO[] = brew?.usage ?? [];  
+    let usage: UsageDTO[] = brew?.usage ?? [];
     let comment: string = brew?.comment ?? "";
     let time: Date = brew?.time ?? new Date(Date.now());
 
@@ -52,9 +50,9 @@
         <div class="text-2xl font-bold">Edycja</div>
     {/if}
 
-    <UsageWizard items={openItems} bind:usage={usage}></UsageWizard>
+    <UsageWizard items={items} bind:usage={usage}></UsageWizard>
 
-    <div class="mt-3">
+    <div class="mt-3" data-vaul-no-drag>
         <Label for="time">
             Data:
             <DateTimePicker bind:value={time}/>
